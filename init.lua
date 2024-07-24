@@ -40,7 +40,15 @@ require('lazy').setup({
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
     },
     {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
-    {'aznhe21/actions-preview.nvim'}
+    {'aznhe21/actions-preview.nvim'},
+--[[    {
+        'MeanderingProgrammer/markdown.nvim',
+        main = "render-markdown",
+        opts = {},
+        name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
+        dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    },
+        --]]
 })
 
 
