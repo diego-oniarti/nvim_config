@@ -43,7 +43,15 @@ require('lazy').setup({
     {'aznhe21/actions-preview.nvim'},
     {'vim-airline/vim-airline'},
     {'vim-airline/vim-airline-themes'},
-    {'bling/vim-bufferline'}
+    {'bling/vim-bufferline'},
+--[[    {
+        'MeanderingProgrammer/markdown.nvim',
+        main = "render-markdown",
+        opts = {},
+        name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
+        dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    },
+        --]]
 })
 
 
