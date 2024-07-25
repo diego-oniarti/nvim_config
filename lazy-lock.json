@@ -16,5 +16,8 @@
   "render-markdown": { "branch": "main", "commit": "3b8f191d8acbd75d55665d0ffc27fce659361249" },
   "rose-pine": { "branch": "main", "commit": "7b2d9ce64659457105e13c085457a2f8aad4cd7c" },
   "telescope.nvim": { "branch": "master", "commit": "6312868392331c9c0f22725041f1ec2bef57c751" },
+  "vim-airline": { "branch": "master", "commit": "d25c049e617775eb2eb26c580e5dec591c94d480" },
+  "vim-airline-themes": { "branch": "master", "commit": "a9aa25ce323b2dd04a52706f4d1b044f4feb7617" },
+  "vim-bufferline": { "branch": "master", "commit": "651fd010aa9613a4b8636a4af8a2db0d22800262" },
   "vim-indent-guides": { "branch": "master", "commit": "a1e1390c0136e63e813d051de2003bf0ee18ae30" }
 }
