@@ -34,6 +34,13 @@ require('lazy').setup({
         dependencies = { "nvim-lua/plenary.nvim" }
     },
     {'https://github.com/preservim/vim-indent-guides'},
+    {'aznhe21/actions-preview.nvim'},
+    {'tpope/vim-fugitive'},
+    {
+        'nvim-lualine/lualine.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+    },
+
     --[[{
         'MeanderingProgrammer/markdown.nvim',
         name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
@@ -41,13 +48,23 @@ require('lazy').setup({
         enable=false,
     },
     {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},--]]
-    {'aznhe21/actions-preview.nvim'},
-    {'vim-airline/vim-airline'},
-    {'vim-airline/vim-airline-themes'},
-    {'tpope/vim-fugitive'},
+
+    --{'vim-airline/vim-airline'},
+    --{'vim-airline/vim-airline-themes'},
 })
 
+require('lualine').setup {
+    tabline = {
+        lualine_a = {'buffers'},
+        lualine_b = {},
+        lualine_c = {},
+        lualine_x = {},
+        lualine_y = {},
+        lualine_z = {'tabs'}
+    }
+}
 
+vim.g["airline#extensions#bufferline#enabled"] = 1
 vim.cmd.colorscheme('one')
 --vim.opt.background="light"
 
@@ -96,7 +113,7 @@ end, { noremap = true, silent = true })
 vim.opt.expandtab = true
 vim.opt.guicursor = 'i:ver50'
 
-
+--[[
 vim.g.airline_left_sep = ''
 vim.g.airline_left_alt_sep = ''
 vim.g.airline_right_sep = ''
@@ -107,7 +124,5 @@ vim.g.airline_symbols.readonly = ''
 vim.g.airline_symbols.linenr = ' :'
 vim.g.airline_symbols.maxlinenr = '☰ '
 vim.g.airline_symbols.dirty='⚡'
-
---vim.g["airline#extensions#bufferline#enabled"] = 0
-vim.g.airline_statusline_ontop = 0
+--]]
 
