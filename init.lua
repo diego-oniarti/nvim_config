@@ -34,24 +34,17 @@ require('lazy').setup({
         dependencies = { "nvim-lua/plenary.nvim" }
     },
     {'https://github.com/preservim/vim-indent-guides'},
-    {
+    --[[{
         'MeanderingProgrammer/markdown.nvim',
         name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+        enable=false,
     },
-    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},--]]
     {'aznhe21/actions-preview.nvim'},
     {'vim-airline/vim-airline'},
     {'vim-airline/vim-airline-themes'},
-    {'bling/vim-bufferline'},
---[[    {
-        'MeanderingProgrammer/markdown.nvim',
-        main = "render-markdown",
-        opts = {},
-        name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
-        dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
-    },
-        --]]
+    {'tpope/vim-fugitive'},
 })
 
 
@@ -104,4 +97,17 @@ vim.opt.expandtab = true
 vim.opt.guicursor = 'i:ver50'
 
 
+vim.g.airline_left_sep = ''
+vim.g.airline_left_alt_sep = ''
+vim.g.airline_right_sep = ''
+vim.g.airline_right_alt_sep = ''
+vim.g.airline_symbols.branch = ''
+vim.g.airline_symbols.colnr = ' ℅:'
+vim.g.airline_symbols.readonly = ''
+vim.g.airline_symbols.linenr = ' :'
+vim.g.airline_symbols.maxlinenr = '☰ '
+vim.g.airline_symbols.dirty='⚡'
+
+--vim.g["airline#extensions#bufferline#enabled"] = 0
+vim.g.airline_statusline_ontop = 0
 
