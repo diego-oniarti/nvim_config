@@ -41,19 +41,22 @@ require('lazy').setup({
         dependencies = { 'nvim-tree/nvim-web-devicons' },
     },
 
-    --[[{
+    {
         'MeanderingProgrammer/markdown.nvim',
         name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
         enable=false,
     },
-    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},--]]
+    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
 
     --{'vim-airline/vim-airline'},
     --{'vim-airline/vim-airline-themes'},
 })
 
 require('lualine').setup {
+    options = {
+        theme = 'onedark'
+    },
     tabline = {
         lualine_a = {'buffers'},
         lualine_b = {},

@@ -1,5 +1,7 @@
 vim.g.mapleader = " "
 vim.keymap.set("n", "<C-e>", vim.cmd.Ex)
+vim.keymap.set("n", "<C-h>", vim.cmd.bp)
+vim.keymap.set("n", "<C-l>", vim.cmd.bn)
 
 --[[
 vim.keymap.set('n', '<C-s>f', builtin.find_files, {})
