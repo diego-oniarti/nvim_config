@@ -33,24 +33,32 @@ require('lazy').setup({
         branch = "harpoon2",
         dependencies = { "nvim-lua/plenary.nvim" }
     },
-    {'https://github.com/preservim/vim-indent-guides'},
+    {'preservim/vim-indent-guides'},
     {'aznhe21/actions-preview.nvim'},
     {'tpope/vim-fugitive'},
     {
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
     },
-
     {
-        'MeanderingProgrammer/markdown.nvim',
-        name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {},
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
-        enable=false,
+        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+        --     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
     },
     {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
 
     --{'vim-airline/vim-airline'},
     --{'vim-airline/vim-airline-themes'},
+    {
+        "lervag/vimtex",
+        config = function()
+            vim.g.tex_flavor = "latex"
+            vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
+            vim.g.vimtex_compiler_method = "latexmk"
+        end,
+    },
 })
 
 require('lualine').setup {
@@ -129,3 +137,5 @@ vim.g.airline_symbols.maxlinenr = '☰ '
 vim.g.airline_symbols.dirty='⚡'
 --]]
 
+vim.keymap.set("n", "<leader>ll", ":VimtexCompile<CR>", { noremap = true, silent = true })  -- Compile the document
+vim.keymap.set("n", "<leader>lv", ":VimtexView<CR>", { noremap = true, silent = true })    -- Open PDF in Zathura
