@@ -1,4 +1,4 @@
-require("die")
+require("pre")
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 
 -- Auto-install lazy.nvim if not present
@@ -104,23 +104,6 @@ end
 
 --ColorMyPencils()
 
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<C-s>f', builtin.find_files, {})
-vim.keymap.set('n', '<C-s>s', builtin.lsp_document_symbols, {})
-vim.keymap.set('n', '<C-s>c', builtin.live_grep, {})
-
-local harpoon = require("harpoon")
-harpoon.setup()
-vim.g.mapleader = ' '
-vim.keymap.set("n", "<C-s>a", function() harpoon:list():append() end)
-vim.keymap.set("n", "<C-s>d", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
-vim.keymap.set("n", "<C-s>q", function() harpoon:list():prev() end)
-vim.keymap.set("n", "<C-s>e", function() harpoon:list():next() end)
-
-vim.keymap.set("n", "<C-s>z", function()
-    require("actions-preview").code_actions()
-end, { noremap = true, silent = true })
-
 vim.opt.expandtab = true
 vim.opt.guicursor = 'i:ver50'
 
@@ -137,5 +120,5 @@ vim.g.airline_symbols.maxlinenr = '☰ '
 vim.g.airline_symbols.dirty='⚡'
 --]]
 
-vim.keymap.set("n", "<leader>ll", ":VimtexCompile<CR>", { noremap = true, silent = true })  -- Compile the document
-vim.keymap.set("n", "<leader>lv", ":VimtexView<CR>", { noremap = true, silent = true })    -- Open PDF in Zathura
+
+require("post")
