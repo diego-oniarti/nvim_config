@@ -33,7 +33,7 @@ require('lazy').setup({
         branch = "harpoon2",
         dependencies = { "nvim-lua/plenary.nvim" }
     },
-    {'preservim/vim-indent-guides'},
+    -- {'preservim/vim-indent-guides'},
     {'aznhe21/actions-preview.nvim'},
     {'tpope/vim-fugitive'},
     {
@@ -44,13 +44,8 @@ require('lazy').setup({
         'MeanderingProgrammer/render-markdown.nvim',
         opts = {},
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
-        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
-        --     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
     },
     {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
-
-    --{'vim-airline/vim-airline'},
-    --{'vim-airline/vim-airline-themes'},
     {
         "lervag/vimtex",
         config = function()
@@ -59,7 +54,38 @@ require('lazy').setup({
             vim.g.vimtex_compiler_method = "latexmk"
         end,
     },
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
+        opts = {},
+    }
 })
+
+local highlight = {
+    "RainbowRed",
+    "RainbowYellow",
+    "RainbowBlue",
+    "RainbowOrange",
+    "RainbowGreen",
+    "RainbowViolet",
+    "RainbowCyan",
+}
+
+local hooks = require "ibl.hooks"
+-- create the highlight groups in the highlight setup hook, so they are reset
+-- every time the colorscheme changes
+hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+    vim.api.nvim_set_hl(0,  "RainbowViolet", { fg = "#E06C75" })
+    vim.api.nvim_set_hl(0,  "RainbowCyan"  , { fg = "#E5C07B" })
+    vim.api.nvim_set_hl(0,  "RainbowRed"    , { fg = "#61AFEF" })
+    vim.api.nvim_set_hl(0,  "RainbowYellow" , { fg = "#D19A66" })
+    vim.api.nvim_set_hl(0,  "RainbowBlue"   , { fg = "#98C379" })
+    vim.api.nvim_set_hl(0,  "RainbowOrange" , { fg = "#C678DD" })
+    vim.api.nvim_set_hl(0,  "RainbowGreen"  , { fg = "#56B6C2" })
+end)                         
+                             
+require("ibl").setup { indent = { highlight = highlight } }
+
 
 require('lualine').setup {
     options = {
