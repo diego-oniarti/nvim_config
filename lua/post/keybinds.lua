@@ -24,4 +24,5 @@ vim.keymap.set('n', '<C-s>c', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>s', builtin.lsp_document_symbols, {})
 vim.keymap.set('n', '<leader>r', builtin.lsp_references, {})
 vim.keymap.set('n', '<leader>h', vim.lsp.buf.hover, {})
+vim.keymap.set('n', '<leader>n', vim.lsp.buf.rename, {})
 

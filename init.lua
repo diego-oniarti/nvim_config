@@ -52,6 +52,7 @@ require('lazy').setup({
             vim.g.tex_flavor = "latex"
             vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
             vim.g.vimtex_compiler_method = "latexmk"
+            vim.g.qf_auto_open_quickfix=0
         end,
     },
     {
@@ -62,28 +63,28 @@ require('lazy').setup({
 })
 
 local highlight = {
+    "RainbowViolet",
+    "RainbowCyan",
     "RainbowRed",
     "RainbowYellow",
     "RainbowBlue",
     "RainbowOrange",
     "RainbowGreen",
-    "RainbowViolet",
-    "RainbowCyan",
 }
 
 local hooks = require "ibl.hooks"
 -- create the highlight groups in the highlight setup hook, so they are reset
 -- every time the colorscheme changes
 hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-    vim.api.nvim_set_hl(0,  "RainbowViolet", { fg = "#E06C75" })
-    vim.api.nvim_set_hl(0,  "RainbowCyan"  , { fg = "#E5C07B" })
-    vim.api.nvim_set_hl(0,  "RainbowRed"    , { fg = "#61AFEF" })
-    vim.api.nvim_set_hl(0,  "RainbowYellow" , { fg = "#D19A66" })
-    vim.api.nvim_set_hl(0,  "RainbowBlue"   , { fg = "#98C379" })
-    vim.api.nvim_set_hl(0,  "RainbowOrange" , { fg = "#C678DD" })
-    vim.api.nvim_set_hl(0,  "RainbowGreen"  , { fg = "#56B6C2" })
-end)                         
-                             
+    vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#F09EA7" })
+    vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#FAFABE" })
+    vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#C7CAFF" })
+    vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#F6CA94" })
+    vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#C1EBC0" })
+    vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#CDABEB" })
+    vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#F6C2F3" })
+end)
+
 require("ibl").setup { indent = { highlight = highlight } }
 
 
