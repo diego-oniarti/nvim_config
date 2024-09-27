@@ -59,7 +59,8 @@ require('lazy').setup({
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
         opts = {},
-    }
+    },
+    {"https://github.com/rebelot/kanagawa.nvim"},
 })
 
 local highlight = {
@@ -90,7 +91,7 @@ require("ibl").setup { indent = { highlight = highlight } }
 
 require('lualine').setup {
     options = {
-        theme = 'onedark'
+        theme = 'horizon' -- onedark powerline_dark
     },
     tabline = {
         lualine_a = {'buffers'},
@@ -103,8 +104,11 @@ require('lualine').setup {
 }
 
 vim.g["airline#extensions#bufferline#enabled"] = 1
-vim.cmd.colorscheme('one')
+--vim.cmd.colorscheme('one')
+--vim.cmd.colorscheme('wildcharm')
 --vim.opt.background="light"
+--
+vim.cmd.colorscheme("kanagawa")
 
 local lsp_zero = require('lsp-zero')
 
