@@ -133,23 +133,16 @@ function ColorMyPencils(color)
     vim.api.nvim_set_hl(0, "NormalFloat", {bg="none"})
 end
 
---ColorMyPencils()
-
 vim.opt.expandtab = true
 vim.opt.guicursor = 'i:ver50'
 
---[[
-vim.g.airline_left_sep = ''
-vim.g.airline_left_alt_sep = ''
-vim.g.airline_right_sep = ''
-vim.g.airline_right_alt_sep = ''
-vim.g.airline_symbols.branch = ''
-vim.g.airline_symbols.colnr = ' ℅:'
-vim.g.airline_symbols.readonly = ''
-vim.g.airline_symbols.linenr = ' :'
-vim.g.airline_symbols.maxlinenr = '☰ '
-vim.g.airline_symbols.dirty='⚡'
---]]
-
+vim.o.wrap = false
+-- Enable wrap only for .tex files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "tex",
+  callback = function()
+    vim.opt_local.wrap = true
+  end,
+})
 
 require("post")
