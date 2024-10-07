@@ -61,6 +61,7 @@ require('lazy').setup({
         opts = {},
     },
     {"https://github.com/rebelot/kanagawa.nvim"},
+    {"https://github.com/airblade/vim-gitgutter"},
 })
 
 local highlight = {
@@ -146,3 +147,6 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 require("post")
+
+print("Diego Oniarti")
+
