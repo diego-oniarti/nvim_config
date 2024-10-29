@@ -62,6 +62,12 @@ require('lazy').setup({
     },
     {"https://github.com/rebelot/kanagawa.nvim"},
     {"https://github.com/airblade/vim-gitgutter"},
+    -- {
+    --     'neoclide/coc.nvim',
+    --     branch = 'release',
+    --     lazy = false,  -- Disable lazy loading for coc.nvim for faster availability
+    -- },
+    {"https://github.com/mhinz/vim-startify"}
 })
 
 local highlight = {
@@ -109,7 +115,7 @@ vim.g["airline#extensions#bufferline#enabled"] = 1
 --vim.cmd.colorscheme('wildcharm')
 --vim.opt.background="light"
 --
-vim.cmd.colorscheme("kanagawa")
+vim.cmd.colorscheme("kanagawa-wave")
 
 local lsp_zero = require('lsp-zero')
 
@@ -140,9 +146,11 @@ vim.opt.guicursor = 'i:ver50'
 vim.o.wrap = false
 -- Enable wrap only for .tex files
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "tex",
+  pattern = {"txt", "tex"},
   callback = function()
     vim.opt_local.wrap = true
+    vim.opt_local.spell = true
+    vim.opt_local.spelllang = "it,en"
   end,
 })
 
