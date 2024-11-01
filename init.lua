@@ -40,17 +40,17 @@ require('lazy').setup({
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
     },
-    {
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {},
-        dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    --[[{
+    'MeanderingProgrammer/render-markdown.nvim',
+    opts = {},
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
     },
-    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},--]]
     {
         "lervag/vimtex",
         config = function()
             vim.g.tex_flavor = "latex"
-            vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
+            -- vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
             vim.g.vimtex_compiler_method = "latexmk"
             vim.g.qf_auto_open_quickfix=0
         end,
@@ -67,7 +67,11 @@ require('lazy').setup({
     --     branch = 'release',
     --     lazy = false,  -- Disable lazy loading for coc.nvim for faster availability
     -- },
-    {"https://github.com/mhinz/vim-startify"}
+    {"https://github.com/mhinz/vim-startify"},
+    {
+        "nvim-telescope/telescope-file-browser.nvim",
+        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+    }
 })
 
 local highlight = {
@@ -146,13 +150,16 @@ vim.opt.guicursor = 'i:ver50'
 vim.o.wrap = false
 -- Enable wrap only for .tex files
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = {"txt", "tex"},
-  callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.spell = true
-    vim.opt_local.spelllang = "it,en"
-  end,
+    pattern = {"txt", "tex"},
+    callback = function()
+        vim.opt_local.wrap = true
+        vim.opt_local.spell = true
+        vim.opt_local.spelllang = "it,en"
+    end,
 })
+
+vim.g.startify_session_persistence = 1
+vim.g.startify_session_autoload = 1
 
 require("post")
 
