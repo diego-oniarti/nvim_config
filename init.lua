@@ -40,17 +40,17 @@ require('lazy').setup({
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
     },
-    --[[{
-    'MeanderingProgrammer/render-markdown.nvim',
-    opts = {},
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    {
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {},
+        dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
     },
-    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},--]]
+    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
     {
         "lervag/vimtex",
         config = function()
             vim.g.tex_flavor = "latex"
-            -- vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
+            vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
             vim.g.vimtex_compiler_method = "latexmk"
             vim.g.qf_auto_open_quickfix=0
         end,
@@ -62,17 +62,38 @@ require('lazy').setup({
     },
     {"https://github.com/rebelot/kanagawa.nvim"},
     {"https://github.com/airblade/vim-gitgutter"},
-    -- {
-    --     'neoclide/coc.nvim',
-    --     branch = 'release',
-    --     lazy = false,  -- Disable lazy loading for coc.nvim for faster availability
-    -- },
     {"https://github.com/mhinz/vim-startify"},
     {
         "nvim-telescope/telescope-file-browser.nvim",
         dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
-    }
+    },
+    {
+        "sphamba/smear-cursor.nvim",
+
+        opts = {
+            -- Smear cursor when switching buffers
+            smear_between_buffers = true,
+
+            -- Smear cursor when moving within line or to neighbor lines
+            smear_between_neighbor_lines = false,
+
+            -- Use floating windows to display smears outside buffers.
+            -- May have performance issues with other plugins.
+            use_floating_windows = false,
+
+            -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
+            -- Smears will blend better on all backgrounds.
+            legacy_computing_symbols_support = false,
+
+            -- Attempt to hide the real cursor when smearing.
+            hide_target_hack = true,
+        },
+    },
+    {"https://github.com/karb94/neoscroll.nvim"},
 })
+
+require("neoscroll").setup {}
+
 
 local highlight = {
     "RainbowViolet",
@@ -119,7 +140,7 @@ vim.g["airline#extensions#bufferline#enabled"] = 1
 --vim.cmd.colorscheme('wildcharm')
 --vim.opt.background="light"
 --
-vim.cmd.colorscheme("kanagawa-wave")
+vim.cmd.colorscheme("kanagawa-dragon")
 
 local lsp_zero = require('lsp-zero')
 
