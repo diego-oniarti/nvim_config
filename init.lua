@@ -69,27 +69,30 @@ require('lazy').setup({
     },
     {
         "sphamba/smear-cursor.nvim",
-
         opts = {
             -- Smear cursor when switching buffers
             smear_between_buffers = true,
-
             -- Smear cursor when moving within line or to neighbor lines
             smear_between_neighbor_lines = false,
-
             -- Use floating windows to display smears outside buffers.
             -- May have performance issues with other plugins.
             use_floating_windows = false,
-
             -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
             -- Smears will blend better on all backgrounds.
-            legacy_computing_symbols_support = false,
-
+            legacy_computing_symbols_support = true,
             -- Attempt to hide the real cursor when smearing.
             hide_target_hack = true,
         },
     },
     {"https://github.com/karb94/neoscroll.nvim"},
+    {
+        "atiladefreitas/dooing",
+        config = function()
+            require("dooing").setup({
+                -- your custom config here (optional)
+            })
+        end,
+    },
 })
 
 require("neoscroll").setup {}
@@ -117,7 +120,6 @@ hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
     vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#CDABEB" })
     vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#F6C2F3" })
 end)
-
 require("ibl").setup { indent = { highlight = highlight } }
 
 
@@ -183,6 +185,7 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.wrap = true
         vim.opt_local.spell = true
         vim.opt_local.spelllang = "it,en"
+        vim.opt_local.foldmethod = "manual"
     end,
 })
 
