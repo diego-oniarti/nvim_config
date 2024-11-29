@@ -31,9 +31,10 @@ vim.opt.updatetime = 50
 
 vim.g.mapleader = " "
 
---vim.opt.foldcolumn = "1"
-vim.opt.foldmethod = "manual"
+vim.opt.foldcolumn = "0"
+vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.opt.foldenable=false
+vim.opt.foldenable = false
 vim.opt.foldnestmax = 4
-vim.opt.foldtext=""
+vim.opt.foldtext = ""
+vim.opt.foldminlines = 4

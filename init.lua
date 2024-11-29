@@ -40,17 +40,27 @@ require('lazy').setup({
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
     },
+    --[[{
+    'MeanderingProgrammer/render-markdown.nvim',
+    opts = {},
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    }, --]]
     {
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {},
-        dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        config = function () 
+            local configs = require("nvim-treesitter.configs")
+            configs.setup({
+                highlight = { enable = true },
+                indent = { enable = true },  
+            })
+        end
     },
-    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
     {
         "lervag/vimtex",
         config = function()
             vim.g.tex_flavor = "latex"
-            vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
+            -- vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
             vim.g.vimtex_compiler_method = "latexmk"
             vim.g.qf_auto_open_quickfix=0
         end,
@@ -191,6 +201,9 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.g.startify_session_persistence = 1
 vim.g.startify_session_autoload = 1
+
+require 'nvim-treesitter.install'.prefer_git = false
+require 'nvim-treesitter.install'.compilers = { "clang", "gcc" }
 
 require("post")
 
