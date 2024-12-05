@@ -40,11 +40,11 @@ require('lazy').setup({
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
     },
-    --[[{
+    {
     'MeanderingProgrammer/render-markdown.nvim',
     opts = {},
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
-    }, --]]
+    },
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
@@ -60,7 +60,7 @@ require('lazy').setup({
         "lervag/vimtex",
         config = function()
             vim.g.tex_flavor = "latex"
-            -- vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
+            vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
             vim.g.vimtex_compiler_method = "latexmk"
             vim.g.qf_auto_open_quickfix=0
         end,
@@ -102,6 +102,22 @@ require('lazy').setup({
                 -- your custom config here (optional)
             })
         end,
+    },
+    { "nvzone/timerly", dependencies = {
+            "nvzone/volt",
+    }},
+    {
+        "nvzone/minty",
+        cmd = { "Shades", "Huefy" },
+    },
+    {
+        "nvzone/showkeys",
+        cmd = "ShowkeysToggle",
+        opts = {
+            timeout = 1,
+            maxkeys = 5,
+            -- more opts
+        }
     },
 })
 
@@ -204,6 +220,8 @@ vim.g.startify_session_autoload = 1
 
 require 'nvim-treesitter.install'.prefer_git = false
 require 'nvim-treesitter.install'.compilers = { "clang", "gcc" }
+
+-- require('showkeys').toggle()
 
 require("post")
 
