@@ -41,26 +41,31 @@ require('lazy').setup({
         dependencies = { 'nvim-tree/nvim-web-devicons' },
     },
     {
-    'MeanderingProgrammer/render-markdown.nvim',
-    opts = {},
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {},
+        dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
     },
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
-        config = function () 
+        config = function ()
             local configs = require("nvim-treesitter.configs")
             configs.setup({
                 highlight = { enable = true },
-                indent = { enable = true },  
+                indent = { enable = true },
             })
         end
+    },
+    {
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {},
+        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
     },
     {
         "lervag/vimtex",
         config = function()
             vim.g.tex_flavor = "latex"
-            vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
+            -- vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
             vim.g.vimtex_compiler_method = "latexmk"
             vim.g.qf_auto_open_quickfix=0
         end,
@@ -103,8 +108,16 @@ require('lazy').setup({
             })
         end,
     },
+    {
+        "rjshkhr/shadow.nvim",
+        config = function()
+            vim.opt.termguicolors = true
+            vim.cmd.colorscheme("shadow")
+        end,
+    },
+    {"https://github.com/ku1ik/vim-monokai"},
     { "nvzone/timerly", dependencies = {
-            "nvzone/volt",
+        "nvzone/volt",
     }},
     {
         "nvzone/minty",
@@ -125,7 +138,8 @@ require('lazy').setup({
         dependencies = "nvzone/volt",
         opts = {}
     },
-    {"https://github.com/ku1ik/vim-monokai"},
+    {"https://github.com/andreasvc/vim-256noir"},
+    {"https://github.com/Alligator/accent.vim"},
 })
 
 require("neoscroll").setup {}
@@ -153,13 +167,13 @@ hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
     vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#CDABEB" })
     vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#F6C2F3" })
 end)
-require("ibl").setup { indent = { highlight = highlight } }
+-- require("ibl").setup { indent = { highlight = highlight } }
 
 
 require('lualine').setup {
-    options = {
-        theme = 'horizon' -- onedark powerline_dark
-    },
+    -- options = {
+    --     theme = 'horizon' -- onedark powerline_dark
+    -- },
     tabline = {
         lualine_a = {'buffers'},
         lualine_b = {},
@@ -174,10 +188,15 @@ vim.g["airline#extensions#bufferline#enabled"] = 1
 --vim.cmd.colorscheme('one')
 --vim.cmd.colorscheme('wildcharm')
 --vim.opt.background="light"
---
 --vim.cmd.colorscheme("kanagawa-dragon")
 --vim.cmd.colorscheme("rose-pine")
-vim.cmd.colorscheme("monokai")
+--vim.cmd.colorscheme("monokai")
+--vim.cmd.colorscheme("shadow")
+
+vim.g.accent_colour = 'magenta'
+vim.g.accent_darken = 1
+
+vim.cmd.colorscheme("accent")
 
 local lsp_zero = require('lsp-zero')
 
@@ -201,7 +220,7 @@ function ColorMyPencils(color)
     vim.api.nvim_set_hl(0, "Normal", {bg="none"})
     vim.api.nvim_set_hl(0, "NormalFloat", {bg="none"})
 end
-function ClearBg() 
+function ClearBg()
     vim.api.nvim_set_hl(0, "Normal", {bg="none"})
     vim.api.nvim_set_hl(0, "NormalFloat", {bg="none"})
     vim.api.nvim_set_hl(0, "LineNr", {bg="none"})
@@ -226,13 +245,15 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.g.startify_session_persistence = 1
 vim.g.startify_session_autoload = 1
+vim.g.startify_change_to_dir = 1
+-- vim.g.startify_disable_at_vimenter = 1
 
 require 'nvim-treesitter.install'.prefer_git = false
 require 'nvim-treesitter.install'.compilers = { "clang", "gcc" }
 
 -- require('showkeys').toggle()
 
+
 require("post")
 
 print("Diego Oniarti")
-

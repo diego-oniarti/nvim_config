@@ -1,8 +1,0 @@
-{
-    "coc.preferences.spellCheckLanguages": ["en", "it"],
-    "spellright.language": ["en", "it"],
-    "spellright.documentTypes": ["markdown", "text", "latex", "tex", "html"],
-    "spellright.spellContext": ["string", "comment"],
-    "spellright.notificationClass": "error"
-}
-
