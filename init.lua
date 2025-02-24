@@ -140,6 +140,7 @@ require('lazy').setup({
     },
     {"https://github.com/andreasvc/vim-256noir"},
     {"https://github.com/Alligator/accent.vim"},
+    {"https://github.com/junegunn/gv.vim"},
 })
 
 require("neoscroll").setup {}
