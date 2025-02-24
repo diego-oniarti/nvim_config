@@ -119,6 +119,13 @@ require('lazy').setup({
             -- more opts
         }
     },
+    {
+        "nvzone/typr",
+        cmd = "TyprStats",
+        dependencies = "nvzone/volt",
+        opts = {}
+    },
+    {"https://github.com/ku1ik/vim-monokai"},
 })
 
 require("neoscroll").setup {}
@@ -168,7 +175,9 @@ vim.g["airline#extensions#bufferline#enabled"] = 1
 --vim.cmd.colorscheme('wildcharm')
 --vim.opt.background="light"
 --
-vim.cmd.colorscheme("kanagawa-dragon")
+--vim.cmd.colorscheme("kanagawa-dragon")
+--vim.cmd.colorscheme("rose-pine")
+vim.cmd.colorscheme("monokai")
 
 local lsp_zero = require('lsp-zero')
 
