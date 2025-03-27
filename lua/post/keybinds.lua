@@ -28,3 +28,6 @@ vim.keymap.set('n', '<leader>n', vim.lsp.buf.rename, {})
 
 -- open file_browser with the path of the current buffer
 vim.keymap.set("n", "<space>fb", ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
+
+vim.keymap.set('n', '<leader>bd', ':bp | sp | bn | bd!<CR>')
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
