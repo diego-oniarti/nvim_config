@@ -65,7 +65,7 @@ require('lazy').setup({
         "lervag/vimtex",
         config = function()
             vim.g.tex_flavor = "latex"
-            vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
+            -- vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
             vim.g.vimtex_compiler_method = "latexmk"
             vim.g.qf_auto_open_quickfix=0
         end,
@@ -142,6 +142,7 @@ require('lazy').setup({
     {"https://github.com/Alligator/accent.vim"},
     {"https://github.com/junegunn/gv.vim"},
     {"https://github.com/mfussenegger/nvim-jdtls"},
+    {"https://github.com/preservim/vim-colors-pencil"},
     {"https://github.com/kien/ctrlp.vim"},
     {"https://github.com/bohlender/vim-smt2"},
     {
@@ -211,11 +212,14 @@ vim.g["airline#extensions#bufferline#enabled"] = 1
 vim.cmd.colorscheme("rose-pine")
 --vim.cmd.colorscheme("monokai")
 --vim.cmd.colorscheme("shadow")
+--vim.cmd.colorscheme("256_noir")
 
 vim.g.accent_colour = 'magenta'
 vim.g.accent_darken = 1
+vim.g.nofrils_heavylinenumbers = 1
 
 -- vim.cmd.colorscheme("accent")
+-- vim.cmd.colorscheme("nofrils-light")
 
 local lsp_zero = require('lsp-zero')
 

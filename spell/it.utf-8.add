@@ -37,6 +37,10 @@ ASM
 subtyping
 domotic
 bpp
+NNF
+subformula
+subformulas
+equisatisfiable
 thresholding
 Sobel
 denoise
