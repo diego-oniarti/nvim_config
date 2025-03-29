@@ -317,6 +317,10 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.spell = true
         vim.opt_local.spelllang = { 'en', 'it' }
 
+        vim.g.pencil_higher_contrast_ui=1
+        vim.g.pencil_spell_undercurl=1
+        vim.cmd.colorscheme("pencil")
+
         cmp.setup.buffer({
             sources = cmp.config.sources({
                 -- LaTeX gets LSP first, others get spell first
