@@ -265,113 +265,89 @@ require 'nvim-treesitter.install'.compilers = { "clang", "gcc" }
 local cmp = require('cmp')
 local luasnip = require('luasnip')
 
+-- Default configuration (for code files)
 cmp.setup({
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
-
-  completion = {
-    autocomplete = { cmp.TriggerEvent.TextChanged },
-    completeopt = 'menu,menuone,noinsert,noselect',
-  },
-
-  mapping = cmp.mapping.preset.insert({
-    ['<C-j>'] = cmp.mapping(function()
-      if luasnip.jumpable(1) then luasnip.jump(1) end
-    end, { 'i', 's' }),
-    ['<C-k>'] = cmp.mapping(function()
-      if luasnip.jumpable(-1) then luasnip.jump(-1) end
-    end, { 'i', 's' }),
-
-    ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-    ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-    ['<C-y>'] = cmp.mapping.confirm({ select = false, behavior = cmp.ConfirmBehavior.Replace }),
-    ['<CR>'] = cmp.mapping.abort(),
-
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-  }),
-
-  sources = cmp.config.sources({
-    {
-      name = 'spell',
-      priority = 650,
-      option = {
-        keep_all_entries = true,
-        enable_in_context = function() return true end,
-        lang = {
-          en = { vim.fn.expand('~/.config/nvim/spell/en.utf-8.add') },
-          it = { vim.fn.expand('~/.config/nvim/spell/it.utf-8.add') },
-        },
-        keyword_length = 3,
-        max_item_count = 25,
-        fuzzy = true
-      }
-    },
-    { name = 'nvim_lsp', priority = 1000 },  -- Highest priority
-    { name = 'luasnip', priority = 900 },    -- Second priority
-    {
-      name = 'buffer',
-      priority = 850,  -- Higher than spell but lower than LSP/snippets
-      option = {
-        get_bufnrs = function()  -- Track frequency across all buffers
-          return vim.api.nvim_list_bufs()
+    snippet = {
+        expand = function(args)
+            luasnip.lsp_expand(args.body)
         end,
-        keyword_pattern = [[\k\+]],  -- Broader pattern for more words
-        keyword_length = 2,
-      }
     },
-    { name = 'path', priority = 700 },
-  }),
+    mapping = cmp.mapping.preset.insert({
+        ['<C-n>'] = cmp.mapping.select_next_item(),
+        ['<C-p>'] = cmp.mapping.select_prev_item(),
+        ['<C-y>'] = cmp.mapping.confirm({ select = false }),
+        ['<CR>'] = cmp.mapping.abort(),
 
-  sorting = {
-    comparators = {
-      cmp.config.compare.priority,  -- Sort by source priority first
-      cmp.config.compare.score,
-      cmp.config.compare.exact,
-      cmp.config.compare.locality,
-      cmp.config.compare.sort_text,
-      cmp.config.compare.length,
-      cmp.config.compare.order,
-    }
-  }
+        -- Snippet navigation (reintroduced)
+        ['<Tab>'] = cmp.mapping(function(fallback)
+            if luasnip.jumpable(1) then
+                luasnip.jump(1)
+            else
+                fallback()
+            end
+        end, { 'i', 's' }),
+
+        ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if luasnip.jumpable(-1) then
+                luasnip.jump(-1)
+            else
+                fallback()
+            end
+        end, { 'i', 's' }),
+    }),
+
+    sources = cmp.config.sources({
+        { name = 'nvim_lsp', priority = 1000 },
+        { name = 'luasnip', priority = 900 },
+        { name = 'buffer', priority = 800 },
+        { name = 'path', priority = 700 },
+    })
 })
 
+-- Text file overrides (markdown, tex, txt)
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = {"txt", "tex", 'text', 'markdown'},
-  callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.spell = true
-    vim.opt_local.spelllang = { 'it', 'en' }
-    vim.opt_local.foldmethod = "manual"
-    vim.opt_local.linebreak = true
-    -- Fixed dictionary reload commands
-    local spell_dir = vim.fn.expand('~/.config/nvim/spell/')
-    vim.cmd('silent! runtime ' .. spell_dir .. 'en.utf-8.add')
-    vim.cmd('silent! runtime ' .. spell_dir .. 'it.utf-8.add')
-  end
+    pattern = { "markdown", "tex", "text" },
+    callback = function()
+        vim.opt_local.wrap = true
+        vim.opt_local.linebreak = true
+        vim.opt_local.spell = true
+        vim.opt_local.spelllang = { 'en', 'it' }
+
+        cmp.setup.buffer({
+            sources = cmp.config.sources({
+                -- LaTeX gets LSP first, others get spell first
+                vim.bo.filetype == 'tex' and { name = 'nvim_lsp', priority = 1000 } or { name = 'spell', priority = 1000 },
+                vim.bo.filetype == 'tex' and { name = 'spell', priority = 900 } or { name = 'nvim_lsp', priority = 900 },
+                { name = 'buffer', priority = 800 },
+                { name = 'luasnip', priority = 700 },
+                { name = 'path', priority = 600 },
+            }),
+            mapping = cmp.mapping.preset.insert({
+                ['<C-n>'] = cmp.mapping.select_next_item(),
+                ['<C-p>'] = cmp.mapping.select_prev_item(),
+                ['<Tab>'] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.select_next_item()
+                    else
+                        fallback()
+                    end
+                end),
+            })
+        })
+    end
 })
 
 vim.g.do_filetype_lua = 1
 
 -- Add custom filetypes
 vim.filetype.add({
-  extension = {
-    cnf = "dimacs",
-    icnf = "icnf",
-    p = "tptp",
-    smt2 = "smt2",
-    zf = "zf"
-  }
+    extension = {
+        cnf = "dimacs",
+        icnf = "icnf",
+        p = "tptp",
+        smt2 = "smt2",
+        zf = "zf"
+    }
 })
 
 local lsp = require('lsp-zero')
