@@ -65,7 +65,7 @@ require('lazy').setup({
         "lervag/vimtex",
         config = function()
             vim.g.tex_flavor = "latex"
-            -- vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
+            vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
             vim.g.vimtex_compiler_method = "latexmk"
             vim.g.qf_auto_open_quickfix=0
         end,
