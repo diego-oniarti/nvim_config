@@ -65,7 +65,7 @@ require('lazy').setup({
         "lervag/vimtex",
         config = function()
             vim.g.tex_flavor = "latex"
-            vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
+            -- vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
             vim.g.vimtex_compiler_method = "latexmk"
             vim.g.qf_auto_open_quickfix=0
         end,
@@ -303,8 +303,6 @@ cmp.setup({
     sources = cmp.config.sources({
         { name = 'nvim_lsp', priority = 1000 },
         { name = 'luasnip', priority = 900 },
-        { name = 'buffer', priority = 800 },
-        { name = 'path', priority = 700 },
     })
 })
 
@@ -317,13 +315,8 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.spell = true
         vim.opt_local.spelllang = { 'en', 'it' }
 
-        vim.g.pencil_higher_contrast_ui=1
-        vim.g.pencil_spell_undercurl=1
-        vim.cmd.colorscheme("pencil")
-
         cmp.setup.buffer({
             sources = cmp.config.sources({
-                -- LaTeX gets LSP first, others get spell first
                 vim.bo.filetype == 'tex' and { name = 'nvim_lsp', priority = 1000 } or { name = 'spell', priority = 1000 },
                 vim.bo.filetype == 'tex' and { name = 'spell', priority = 900 } or { name = 'nvim_lsp', priority = 900 },
                 { name = 'buffer', priority = 800 },
@@ -342,6 +335,12 @@ vim.api.nvim_create_autocmd("FileType", {
                 end),
             })
         })
+
+        -- Set light color scheme
+        vim.opt.background = "light"
+        vim.g.pencil_higher_contrast_ui = 1
+        vim.g.pencil_spell_undercurl = 1
+        vim.cmd.colorscheme("pencil")
     end
 })
 
