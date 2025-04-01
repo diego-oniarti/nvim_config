@@ -65,7 +65,8 @@ require('lazy').setup({
         "lervag/vimtex",
         config = function()
             vim.g.tex_flavor = "latex"
-            -- vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
+            vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
+            vim.g.vimtex_version_check=0
             vim.g.vimtex_compiler_method = "latexmk"
             vim.g.qf_auto_open_quickfix=0
         end,
@@ -195,7 +196,10 @@ require('lualine').setup {
     --     theme = 'horizon' -- onedark powerline_dark
     -- },
     tabline = {
-        lualine_a = {'buffers'},
+        lualine_a = {{
+            'buffers',
+            show_filename_only=false,
+        }},
         lualine_b = {},
         lualine_c = {},
         lualine_x = {},
@@ -204,7 +208,8 @@ require('lualine').setup {
     }
 }
 
-vim.g["airline#extensions#bufferline#enabled"] = 1
+--vim.g["airline#extensions#bufferline#enabled"] = 1
+
 --vim.cmd.colorscheme('one')
 --vim.cmd.colorscheme('wildcharm')
 --vim.opt.background="light"
@@ -340,7 +345,9 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt.background = "light"
         vim.g.pencil_higher_contrast_ui = 1
         vim.g.pencil_spell_undercurl = 1
-        vim.cmd.colorscheme("pencil")
+        vim.defer_fn(function()
+            vim.cmd.colorscheme("pencil")
+        end, 100)
     end
 })
 
@@ -360,7 +367,7 @@ vim.filetype.add({
 local lsp = require('lsp-zero')
 lsp.configure('dolmenls', {})
 lsp.setup_servers({'dolmenls'})
-
+vim.opt.fillchars = { stl = "-" }
 require("post")
 
 print("Diego Oniarti")
