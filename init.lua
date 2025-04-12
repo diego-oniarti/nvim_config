@@ -342,13 +342,28 @@ vim.api.nvim_create_autocmd("FileType", {
         })
 
         -- Set light color scheme
-        vim.opt.background = "light"
-        vim.g.pencil_higher_contrast_ui = 1
-        vim.g.pencil_spell_undercurl = 1
-        vim.defer_fn(function()
-            vim.cmd.colorscheme("pencil")
-        end, 100)
+        -- vim.opt.background = "light"
     end
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = {"*.md", "*.txt", "*.tex"},
+    callback = function()
+        vim.defer_fn(function()
+            vim.o.background = "light"
+            vim.cmd("colorscheme rose-pine-dawn")
+        end, 50)
+    end,
+})
+
+vim.api.nvim_create_autocmd("BufLeave", {
+    pattern = {"*.md", "*.txt", "*.tex"},
+    callback = function()
+        vim.defer_fn(function()
+            vim.o.background = "dark"
+            vim.cmd("colorscheme rose-pine-main")
+        end, 50)
+    end,
 })
 
 vim.g.do_filetype_lua = 1
@@ -367,7 +382,7 @@ vim.filetype.add({
 local lsp = require('lsp-zero')
 lsp.configure('dolmenls', {})
 lsp.setup_servers({'dolmenls'})
-vim.opt.fillchars = { stl = "-" }
+-- vim.opt.fillchars = { stl = "-" }
 require("post")
 
 print("Diego Oniarti")
