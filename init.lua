@@ -161,6 +161,27 @@ require('lazy').setup({
             "f3fora/cmp-spell", -- Spell suggestions
         },
     },
+    {
+        "obsidian-nvim/obsidian.nvim",
+        version = "*",
+        ft = "markdown",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "hrsh7th/nvim-cmp",
+            "nvim-telescope/telescope.nvim",
+            "artempyanykh/marksman",
+        },
+        opts = {
+            workspaces = {
+                {name = "diary", path = "~/Desktop/diario"}
+            },
+            preferred_link_style = "wiki",
+            daily_notes = {
+                folder = "days",
+                date_format = "%Y-%m-%d",
+            },
+        },
+    },
 })
 
 require("neoscroll").setup {}
@@ -383,6 +404,7 @@ local lsp = require('lsp-zero')
 lsp.configure('dolmenls', {})
 lsp.setup_servers({'dolmenls'})
 -- vim.opt.fillchars = { stl = "-" }
+
 require("post")
 
 print("Diego Oniarti")
