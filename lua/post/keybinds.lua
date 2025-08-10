@@ -31,3 +31,21 @@ vim.keymap.set("n", "<space>fb", ":Telescope file_browser path=%:p:h select_buff
 
 vim.keymap.set('n', '<leader>bd', ':bp | sp | bn | bd!<CR>')
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
+vim.keymap.set('n', '<C-w>0', '<C-w>|<C-w>_')
+
+-- Diagnostic navigation
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
+
+vim.keymap.set("n", "]e", function()
+  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Next error" })
+
+vim.keymap.set("n", "[e", function()
+  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Previous error" })
+
+-- Send all project diagnostics to quickfix
+vim.keymap.set("n", "<leader>d", function()
+  vim.diagnostic.setqflist({ open = true })
+end, { desc = "Quickfix: all project diagnostics" })
