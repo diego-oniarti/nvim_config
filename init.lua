@@ -182,7 +182,11 @@ require('lazy').setup({
             },
         },
     },
+    {"https://github.com/nvim-telescope/telescope-media-files.nvim"},
+    {"nvim-lua/popup.nvim"},
 })
+
+require('telescope').load_extension('media_files')
 
 require("neoscroll").setup {}
 require("luasnip.loaders.from_vscode").lazy_load() -- For friendly-snippets
@@ -239,6 +243,8 @@ vim.cmd.colorscheme("rose-pine")
 --vim.cmd.colorscheme("monokai")
 --vim.cmd.colorscheme("shadow")
 --vim.cmd.colorscheme("256_noir")
+-- vim.cmd.colorscheme("peachpuff")
+
 
 vim.g.accent_colour = 'magenta'
 vim.g.accent_darken = 1

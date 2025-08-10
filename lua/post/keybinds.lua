@@ -31,3 +31,4 @@ vim.keymap.set("n", "<space>fb", ":Telescope file_browser path=%:p:h select_buff
 
 vim.keymap.set('n', '<leader>bd', ':bp | sp | bn | bd!<CR>')
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
+vim.keymap.set('n', '<C-w>0', '<C-w>|<C-w>_')
