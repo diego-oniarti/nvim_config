@@ -12,11 +12,10 @@ end, { noremap = true, silent = true })
 
 local harpoon = require("harpoon")
 harpoon.setup()
-vim.g.mapleader = ' '
-vim.keymap.set("n", "<C-s>a", function() harpoon:list():append() end)
+vim.keymap.set("n", "<C-s>a", function() harpoon:list():add() end)
 vim.keymap.set("n", "<C-s>d", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
-vim.keymap.set("n", "<C-s>q", function() harpoon:list():prev() end)
-vim.keymap.set("n", "<C-s>e", function() harpoon:list():next() end)
+vim.keymap.set("n", "<C-s>h", function() harpoon:list():prev() end)
+vim.keymap.set("n", "<C-s>l", function() harpoon:list():next() end)
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<C-s>f', builtin.find_files, {})

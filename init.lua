@@ -16,10 +16,10 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
-require('lazy').setup({
+    require('lazy').setup({
     {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
     {'williamboman/mason.nvim'},
-    {'williamboman/mason-lspconfig.nvim'},
+    {'williamboman/mason-lspconfig.nvim', version="v1.32.0"},
     {'neovim/nvim-lspconfig'},
     {'hrsh7th/cmp-nvim-lsp'},
     {'hrsh7th/nvim-cmp'},
@@ -65,8 +65,10 @@ require('lazy').setup({
         "lervag/vimtex",
         config = function()
             vim.g.tex_flavor = "latex"
-            vim.g.vimtex_view_method = "zathura"  -- Set Zathura as PDF viewer
             vim.g.vimtex_version_check=0
+            vim.g.vimtex_view_method = 'general'
+            vim.g.vimtex_view_general_viewer = 'SumatraPDF'
+            vim.g.vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
             vim.g.vimtex_compiler_method = "latexmk"
             vim.g.qf_auto_open_quickfix=0
         end,
@@ -75,114 +77,114 @@ require('lazy').setup({
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
         opts = {},
-    },
-    {"https://github.com/rebelot/kanagawa.nvim"},
-    {"https://github.com/airblade/vim-gitgutter"},
-    {"https://github.com/mhinz/vim-startify"},
-    {
+        },
+        {"https://github.com/rebelot/kanagawa.nvim"},
+        {"https://github.com/airblade/vim-gitgutter"},
+        {"https://github.com/mhinz/vim-startify"},
+        {
         "nvim-telescope/telescope-file-browser.nvim",
         dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
-    },
-    {
+        },
+        {
         "sphamba/smear-cursor.nvim",
         opts = {
-            -- Smear cursor when switching buffers
-            smear_between_buffers = true,
-            -- Smear cursor when moving within line or to neighbor lines
-            smear_between_neighbor_lines = false,
-            -- Use floating windows to display smears outside buffers.
-            -- May have performance issues with other plugins.
-            use_floating_windows = false,
-            -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
-            -- Smears will blend better on all backgrounds.
-            legacy_computing_symbols_support = true,
-            -- Attempt to hide the real cursor when smearing.
-            hide_target_hack = true,
+        -- Smear cursor when switching buffers
+        smear_between_buffers = true,
+        -- Smear cursor when moving within line or to neighbor lines
+        smear_between_neighbor_lines = false,
+        -- Use floating windows to display smears outside buffers.
+        -- May have performance issues with other plugins.
+        use_floating_windows = false,
+        -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
+        -- Smears will blend better on all backgrounds.
+        legacy_computing_symbols_support = true,
+        -- Attempt to hide the real cursor when smearing.
+        hide_target_hack = true,
         },
-    },
-    {"https://github.com/karb94/neoscroll.nvim"},
-    {
+        },
+        {"https://github.com/karb94/neoscroll.nvim"},
+        {
         "atiladefreitas/dooing",
         config = function()
-            require("dooing").setup({
-                -- your custom config here (optional)
-            })
+        require("dooing").setup({
+        -- your custom config here (optional)
+        })
         end,
-    },
-    {
+        },
+        {
         "rjshkhr/shadow.nvim",
         config = function()
-            vim.opt.termguicolors = true
-            vim.cmd.colorscheme("shadow")
+        vim.opt.termguicolors = true
+        vim.cmd.colorscheme("shadow")
         end,
-    },
-    {"https://github.com/ku1ik/vim-monokai"},
-    { "nvzone/timerly", dependencies = {
+        },
+        {"https://github.com/ku1ik/vim-monokai"},
+        { "nvzone/timerly", dependencies = {
         "nvzone/volt",
-    }},
-    {
+        }},
+        {
         "nvzone/minty",
         cmd = { "Shades", "Huefy" },
-    },
-    {
+        },
+        {
         "nvzone/showkeys",
         cmd = "ShowkeysToggle",
         opts = {
-            timeout = 1,
-            maxkeys = 5,
-            -- more opts
+        timeout = 1,
+        maxkeys = 5,
+        -- more opts
         }
-    },
-    {
+        },
+        {
         "nvzone/typr",
         cmd = "TyprStats",
         dependencies = "nvzone/volt",
         opts = {}
-    },
-    {"https://github.com/andreasvc/vim-256noir"},
-    {"https://github.com/Alligator/accent.vim"},
-    {"https://github.com/junegunn/gv.vim"},
-    {"https://github.com/mfussenegger/nvim-jdtls"},
-    {"https://github.com/preservim/vim-colors-pencil"},
-    {"https://github.com/kien/ctrlp.vim"},
-    {"https://github.com/bohlender/vim-smt2"},
-    {
+        },
+        {"https://github.com/andreasvc/vim-256noir"},
+        {"https://github.com/Alligator/accent.vim"},
+        {"https://github.com/junegunn/gv.vim"},
+        {"https://github.com/mfussenegger/nvim-jdtls"},
+        {"https://github.com/preservim/vim-colors-pencil"},
+        {"https://github.com/kien/ctrlp.vim"},
+        {"https://github.com/bohlender/vim-smt2"},
+        {
         "L3MON4D3/LuaSnip",
         version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
         build = "make install_jsregexp"
-    },
-    {
+        },
+        {
         "L3MON4D3/LuaSnip",
         requires = { "rafamadriz/friendly-snippets" },
-    },
-    {
+        },
+        {
         "hrsh7th/nvim-cmp",
         dependencies = {
-            "f3fora/cmp-spell", -- Spell suggestions
+        "f3fora/cmp-spell", -- Spell suggestions
         },
-    },
-    {
+        },
+        --[[{
         "obsidian-nvim/obsidian.nvim",
         version = "*",
         ft = "markdown",
         dependencies = {
-            "nvim-lua/plenary.nvim",
-            "hrsh7th/nvim-cmp",
-            "nvim-telescope/telescope.nvim",
-            "artempyanykh/marksman",
+        "nvim-lua/plenary.nvim",
+        "hrsh7th/nvim-cmp",
+        "nvim-telescope/telescope.nvim",
+        "artempyanykh/marksman",
         },
         opts = {
-            workspaces = {
-                {name = "diary", path = "~/Desktop/diario"}
-            },
-            preferred_link_style = "wiki",
-            daily_notes = {
-                folder = "days",
-                date_format = "%Y-%m-%d",
-            },
+        workspaces = {
+        -- {name = "diary", path = "~/Desktop/diario"}
         },
-    },
-})
+        preferred_link_style = "wiki",
+        daily_notes = {
+        folder = "days",
+        date_format = "%Y-%m-%d",
+        },
+        },
+        },--]]
+    })
 
 require("neoscroll").setup {}
 require("luasnip.loaders.from_vscode").lazy_load() -- For friendly-snippets
@@ -234,8 +236,8 @@ require('lualine').setup {
 --vim.cmd.colorscheme('one')
 --vim.cmd.colorscheme('wildcharm')
 --vim.opt.background="light"
---vim.cmd.colorscheme("kanagawa-dragon")
-vim.cmd.colorscheme("rose-pine")
+vim.cmd.colorscheme("kanagawa-dragon")
+--vim.cmd.colorscheme("rose-pine")
 --vim.cmd.colorscheme("monokai")
 --vim.cmd.colorscheme("shadow")
 --vim.cmd.colorscheme("256_noir")
@@ -382,7 +384,7 @@ vim.api.nvim_create_autocmd("BufLeave", {
     callback = function()
         vim.defer_fn(function()
             vim.o.background = "dark"
-            vim.cmd("colorscheme rose-pine-main")
+            vim.cmd("colorscheme kanagawa-dragon")
         end, 50)
     end,
 })
