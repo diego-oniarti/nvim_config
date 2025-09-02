@@ -6,17 +6,6 @@ vim.keymap.set("n", "<C-l>", vim.cmd.bn)
 vim.keymap.set("n", "<leader>ll", ":VimtexCompile<CR>", { noremap = true, silent = true })  -- Compile the document
 vim.keymap.set("n", "<leader>lv", ":VimtexView<CR>", { noremap = true, silent = true })    -- Open PDF in Zathura
 
-vim.keymap.set("n", "<C-s>z", function()
-    require("actions-preview").code_actions()
-end, { noremap = true, silent = true })
-
-local harpoon = require("harpoon")
-harpoon.setup()
-vim.keymap.set("n", "<C-s>a", function() harpoon:list():add() end)
-vim.keymap.set("n", "<C-s>d", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
-vim.keymap.set("n", "<C-s>h", function() harpoon:list():prev() end)
-vim.keymap.set("n", "<C-s>l", function() harpoon:list():next() end)
-
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<C-s>f', builtin.find_files, {})
 vim.keymap.set('n', '<C-s>c', builtin.live_grep, {})

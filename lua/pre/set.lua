@@ -27,7 +27,7 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
---vim.opt.colorcolumn = "80"
+vim.opt.colorcolumn = "85"
 
 vim.g.mapleader = " "
 
@@ -38,3 +38,6 @@ vim.opt.foldenable = false
 vim.opt.foldnestmax = 4
 vim.opt.foldtext = ""
 vim.opt.foldminlines = 4
+
+vim.opt.guicursor = 'i:ver50'
+vim.opt.cursorline = true

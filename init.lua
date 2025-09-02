@@ -1,207 +1,116 @@
 require("pre")
-local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 
--- Auto-install lazy.nvim if not present
+-- Lazy.nvim setup
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
-    print('Installing lazy.nvim....')
+    print('Installing lazy.nvim...')
     vim.fn.system({
         'git',
         'clone',
         '--filter=blob:none',
         'https://github.com/folke/lazy.nvim.git',
-        '--branch=stable', -- latest stable release
+        '--branch=stable',
         lazypath,
     })
 end
-
 vim.opt.rtp:prepend(lazypath)
 
-    require('lazy').setup({
-    {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
-    {'williamboman/mason.nvim'},
-    {'williamboman/mason-lspconfig.nvim', version="v1.32.0"},
-    {'neovim/nvim-lspconfig'},
-    {'hrsh7th/cmp-nvim-lsp'},
-    {'hrsh7th/nvim-cmp'},
-    {'L3MON4D3/LuaSnip'},
-    {'nvim-telescope/telescope.nvim', tag = '0.1.6'},
-    {'rose-pine/neovim', name = 'rose-pine' },
-    {'rakr/vim-one', name = 'one' },
-    { "nvim-lua/plenary.nvim", lazy = true },
+-- Plugins
+require("lazy").setup({
+    -------------------- UI --------------------
+    { "nvim-tree/nvim-web-devicons", lazy = true },
+    { "nvim-lualine/lualine.nvim", event = "VeryLazy" },
+    { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {}, event = "BufReadPre" },
+    { "nvim-mini/mini.nvim" },
+    { "karb94/neoscroll.nvim", event = "VeryLazy", config = function() require('neoscroll').setup() end },
+
+    -------------------- Editing --------------------
+    { "tpope/vim-surround", event = "BufReadPre" },
+    { "tpope/vim-repeat", event = "BufReadPre" },
+    { "tpope/vim-fugitive" },
+    { "junegunn/gv.vim", lazt = true},
+    { "airblade/vim-gitgutter", event = "BufReadPre" },
+
+    -------------------- LSP & Completion --------------------
+    { "VonHeikemen/lsp-zero.nvim", branch = "v4.x", dependencies = {
+        { "neovim/nvim-lspconfig" },
+        { "williamboman/mason.nvim", build = ":MasonUpdate" },
+        { "williamboman/mason-lspconfig.nvim" },
+        { "hrsh7th/nvim-cmp" },
+        { "hrsh7th/cmp-nvim-lsp" },
+        { "L3MON4D3/LuaSnip" },
+        { "saadparwaiz1/cmp_luasnip" },
+        { "rafamadriz/friendly-snippets" },
+        {
+            'aznhe21/actions-preview.nvim',
+            event = "BufReadPre",
+            keys = { {"<C-s>z", function() require("actions-preview").code_actions() end, desc = "Code Actions"} }
+        }
+
+    }},
+
+    -------------------- Syntax & Highlighting --------------------
+    { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", event = { "BufReadPost", "BufNewFile" } },
+    { "norcalli/nvim-colorizer.lua", event = "BufReadPre" },
+    { "MeanderingProgrammer/render-markdown.nvim", opts = {}, ft = { "markdown" } },
+
+    -------------------- Telescope --------------------
+    { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" }, cmd = "Telescope" },
+    { "nvim-telescope/telescope-file-browser.nvim", cmd = "Telescope" },
+
+    -------------------- Utilities --------------------
     {
         "ThePrimeagen/harpoon",
         branch = "harpoon2",
-        dependencies = { "nvim-lua/plenary.nvim" }
-    },
-    -- {'preservim/vim-indent-guides'},
-    {'aznhe21/actions-preview.nvim'},
-    {'tpope/vim-fugitive'},
-    {
-        'nvim-lualine/lualine.nvim',
-        dependencies = { 'nvim-tree/nvim-web-devicons' },
-    },
-    {
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {},
-        dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
-    },
-    {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
-        config = function ()
-            local configs = require("nvim-treesitter.configs")
-            configs.setup({
-                highlight = { enable = true },
-                indent = { enable = true },
-            })
-        end
-    },
-    {
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {},
-        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
-    },
-    {
-        "lervag/vimtex",
-        config = function()
-            vim.g.tex_flavor = "latex"
-            vim.g.vimtex_version_check=0
-            vim.g.vimtex_view_method = 'general'
-            vim.g.vimtex_view_general_viewer = 'SumatraPDF'
-            vim.g.vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
-            vim.g.vimtex_compiler_method = "latexmk"
-            vim.g.qf_auto_open_quickfix=0
-        end,
-    },
-    {
-        "lukas-reineke/indent-blankline.nvim",
-        main = "ibl",
-        opts = {},
-        },
-        {"https://github.com/rebelot/kanagawa.nvim"},
-        {"https://github.com/airblade/vim-gitgutter"},
-        {"https://github.com/mhinz/vim-startify"},
-        {
-        "nvim-telescope/telescope-file-browser.nvim",
-        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
-        },
-        {
-        "sphamba/smear-cursor.nvim",
-        opts = {
-        -- Smear cursor when switching buffers
-        smear_between_buffers = true,
-        -- Smear cursor when moving within line or to neighbor lines
-        smear_between_neighbor_lines = false,
-        -- Use floating windows to display smears outside buffers.
-        -- May have performance issues with other plugins.
-        use_floating_windows = false,
-        -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
-        -- Smears will blend better on all backgrounds.
-        legacy_computing_symbols_support = true,
-        -- Attempt to hide the real cursor when smearing.
-        hide_target_hack = true,
-        },
-        },
-        {"https://github.com/karb94/neoscroll.nvim"},
-        {
-        "atiladefreitas/dooing",
-        config = function()
-        require("dooing").setup({
-        -- your custom config here (optional)
-        })
-        end,
-        },
-        {
-        "rjshkhr/shadow.nvim",
-        config = function()
-        vim.opt.termguicolors = true
-        vim.cmd.colorscheme("shadow")
-        end,
-        },
-        {"https://github.com/ku1ik/vim-monokai"},
-        { "nvzone/timerly", dependencies = {
-        "nvzone/volt",
-        }},
-        {
-        "nvzone/minty",
-        cmd = { "Shades", "Huefy" },
-        },
-        {
-        "nvzone/showkeys",
-        cmd = "ShowkeysToggle",
-        opts = {
-        timeout = 1,
-        maxkeys = 5,
-        -- more opts
+        dependencies = { "nvim-lua/plenary.nvim" },
+        keys = {
+            { "<C-s>a", function() require("harpoon").setup(); require("harpoon").list():add() end, desc = "Harpoon Add" },
+            { "<C-s>d", function() require("harpoon").ui:toggle_quick_menu(require("harpoon").list()) end, desc = "Harpoon Toggle" },
+            { "<C-s>h", function() require("harpoon").list():prev() end, desc = "Harpoon Prev" },
+            { "<C-s>l", function() require("harpoon").list():next() end, desc = "Harpoon Next" },
         }
-        },
-        {
-        "nvzone/typr",
-        cmd = "TyprStats",
-        dependencies = "nvzone/volt",
-        opts = {}
-        },
-        {"https://github.com/andreasvc/vim-256noir"},
-        {"https://github.com/Alligator/accent.vim"},
-        {"https://github.com/junegunn/gv.vim"},
-        {"https://github.com/mfussenegger/nvim-jdtls"},
-        {"https://github.com/preservim/vim-colors-pencil"},
-        {"https://github.com/kien/ctrlp.vim"},
-        {"https://github.com/bohlender/vim-smt2"},
-        {
-        "L3MON4D3/LuaSnip",
-        version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-        build = "make install_jsregexp"
-        },
-        {
-        "L3MON4D3/LuaSnip",
-        requires = { "rafamadriz/friendly-snippets" },
-        },
-        {
-        "hrsh7th/nvim-cmp",
-        dependencies = {
-        "f3fora/cmp-spell", -- Spell suggestions
-        },
-        },
-        --[[{
-        "obsidian-nvim/obsidian.nvim",
-        version = "*",
-        ft = "markdown",
-        dependencies = {
-        "nvim-lua/plenary.nvim",
-        "hrsh7th/nvim-cmp",
-        "nvim-telescope/telescope.nvim",
-        "artempyanykh/marksman",
-        },
-        opts = {
-        workspaces = {
-        -- {name = "diary", path = "~/Desktop/diario"}
-        },
-        preferred_link_style = "wiki",
-        daily_notes = {
-        folder = "days",
-        date_format = "%Y-%m-%d",
-        },
-        },
-        },--]]
-    })
+    },
+    { "lervag/vimtex", ft = { "tex" } },
+    -- { "folke/trouble.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, cmd = "Trouble" },
+    -- { "azabiong/vim-highlighter", event = "BufReadPre" },
+    { "folke/which-key.nvim", event = "VeryLazy", opts = {
+        delay = 5000
+    } },
 
-require("neoscroll").setup {}
-require("luasnip.loaders.from_vscode").lazy_load() -- For friendly-snippets
+    -------------------- Colors --------------------
+    { "rose-pine/neovim", name = "rose-pine", lazy = true },
+    { "rakr/vim-one", name = "one", lazy = true },
+    { "rjshkhr/shadow.nvim", lazy = true, config = function() vim.opt.termguicolors = true vim.cmd.colorscheme("shadow") end },
+    { "ku1ik/vim-monokai", lazy = true },
+    { "rebelot/kanagawa.nvim", lazy = true },
+    { "andreasvc/vim-256noir", lazy = true },
+    { "Alligator/accent.vim", lazy = true },
+}, {
+        performance = {
+            rtp = {
+                disabled_plugins = {
+                    "gzip",
+                    "matchit",
+                    "tarPlugin",
+                    "tohtml",
+                    "tutor",
+                    "zipPlugin",
+                },
+            },
+        },
+    }
+)
 
-local highlight = {
-    "RainbowViolet",
-    "RainbowCyan",
-    "RainbowRed",
-    "RainbowYellow",
-    "RainbowBlue",
-    "RainbowOrange",
-    "RainbowGreen",
-}
+require("mini.sessions").setup({
+})
+require("mini.starter").setup()
 
+-- UI tweaks
+require("neoscroll").setup({})
+require("luasnip.loaders.from_vscode").lazy_load()
+
+-- Rainbow indent
 local hooks = require "ibl.hooks"
--- create the highlight groups in the highlight setup hook, so they are reset
--- every time the colorscheme changes
 hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
     vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#F09EA7" })
     vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#FAFABE" })
@@ -211,66 +120,87 @@ hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
     vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#CDABEB" })
     vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#F6C2F3" })
 end)
--- require("ibl").setup { indent = { highlight = highlight } }
 
-
+-- Lualine
 require('lualine').setup {
-    -- options = {
-    --     theme = 'horizon' -- onedark powerline_dark
-    -- },
     tabline = {
-        lualine_a = {{
-            'buffers',
-            show_filename_only=false,
-        }},
-        lualine_b = {},
-        lualine_c = {},
-        lualine_x = {},
-        lualine_y = {},
+        lualine_a = {{ 'buffers', show_filename_only = false }},
         lualine_z = {'tabs'}
     }
 }
 
---vim.g["airline#extensions#bufferline#enabled"] = 1
-
---vim.cmd.colorscheme('one')
---vim.cmd.colorscheme('wildcharm')
---vim.opt.background="light"
+-- Colorscheme
 vim.cmd.colorscheme("kanagawa-dragon")
---vim.cmd.colorscheme("rose-pine")
---vim.cmd.colorscheme("monokai")
---vim.cmd.colorscheme("shadow")
---vim.cmd.colorscheme("256_noir")
 
-vim.g.accent_colour = 'magenta'
-vim.g.accent_darken = 1
-vim.g.nofrils_heavylinenumbers = 1
+-- LSP-zero + Mason setup
+local lsp = require('lsp-zero').preset({})
 
--- vim.cmd.colorscheme("accent")
--- vim.cmd.colorscheme("nofrils-light")
-
-local lsp_zero = require('lsp-zero')
-
-lsp_zero.on_attach(function(client, bufnr)
-    lsp_zero.default_keymaps({buffer = bufnr})
+lsp.on_attach(function(client, bufnr)
+    lsp.default_keymaps({ buffer = bufnr })
 end)
 
--- to learn how to use mason.nvim with lsp-zero
--- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guides/integrate-with-mason-nvim.md
-require('mason').setup({})
+require('mason').setup()
 require('mason-lspconfig').setup({
+    automatic_installation = false,
     handlers = {
-        lsp_zero.default_setup,
+        lsp.default_setup,
     }
 })
 
+lsp.setup()
+
+-- CMP + LuaSnip setup
+local cmp = require('cmp')
+local luasnip = require('luasnip')
+
+cmp.setup({
+    snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
+    mapping = cmp.mapping.preset.insert({
+        ['<C-n>'] = cmp.mapping.select_next_item(),
+        ['<C-p>'] = cmp.mapping.select_prev_item(),
+        ['<C-y>'] = cmp.mapping.confirm({ select = false }),
+        ['<CR>'] = cmp.mapping.abort(),
+        ['<Tab>'] = cmp.mapping(function(fallback)
+            if luasnip.jumpable(1) then luasnip.jump(1) else fallback() end
+        end, { 'i', 's' }),
+        ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if luasnip.jumpable(-1) then luasnip.jump(-1) else fallback() end
+        end, { 'i', 's' }),
+    }),
+    sources = cmp.config.sources({
+        { name = 'nvim_lsp', priority = 1000 },
+        { name = 'luasnip', priority = 900 },
+    }),
+})
+
+-- Filetype-specific CMP overrides
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "markdown", "tex", "text" },
+    callback = function()
+        vim.opt_local.wrap = true
+        vim.opt_local.linebreak = true
+        vim.opt_local.spell = true
+        vim.opt_local.spelllang = { 'en', 'it' }
+        cmp.setup.buffer({
+            sources = cmp.config.sources({
+                { name = 'spell', priority = 1000 },
+                { name = 'buffer', priority = 800 },
+            })
+        })
+    end
+})
+
+vim.g.do_filetype_lua = 1
+vim.filetype.add({ extension = { cnf = "dimacs", icnf = "icnf", p = "tptp", smt2 = "smt2", zf = "zf" } })
+
+-- Color helpers
 function ColorMyPencils(color)
     color = color or "rose-pine-moon"
     vim.cmd.colorscheme(color)
-
     vim.api.nvim_set_hl(0, "Normal", {bg="none"})
     vim.api.nvim_set_hl(0, "NormalFloat", {bg="none"})
 end
+
 function ClearBg()
     vim.api.nvim_set_hl(0, "Normal", {bg="none"})
     vim.api.nvim_set_hl(0, "NormalFloat", {bg="none"})
@@ -279,134 +209,4 @@ function ClearBg()
     vim.api.nvim_set_hl(0, "VertSplit", {bg="none"})
 end
 
-vim.opt.expandtab = true
-vim.opt.guicursor = 'i:ver50'
-
-vim.o.wrap = false
--- Enable wrap only for .tex files
-
-vim.g.startify_session_persistence = 1
-vim.g.startify_session_autoload = 1
-vim.g.startify_change_to_dir = 1
--- vim.g.startify_disable_at_vimenter = 1
-
-require 'nvim-treesitter.install'.prefer_git = false
-require 'nvim-treesitter.install'.compilers = { "clang", "gcc" }
-
--- require('showkeys').toggle()
-local cmp = require('cmp')
-local luasnip = require('luasnip')
-
--- Default configuration (for code files)
-cmp.setup({
-    snippet = {
-        expand = function(args)
-            luasnip.lsp_expand(args.body)
-        end,
-    },
-    mapping = cmp.mapping.preset.insert({
-        ['<C-n>'] = cmp.mapping.select_next_item(),
-        ['<C-p>'] = cmp.mapping.select_prev_item(),
-        ['<C-y>'] = cmp.mapping.confirm({ select = false }),
-        ['<CR>'] = cmp.mapping.abort(),
-
-        -- Snippet navigation (reintroduced)
-        ['<Tab>'] = cmp.mapping(function(fallback)
-            if luasnip.jumpable(1) then
-                luasnip.jump(1)
-            else
-                fallback()
-            end
-        end, { 'i', 's' }),
-
-        ['<S-Tab>'] = cmp.mapping(function(fallback)
-            if luasnip.jumpable(-1) then
-                luasnip.jump(-1)
-            else
-                fallback()
-            end
-        end, { 'i', 's' }),
-    }),
-
-    sources = cmp.config.sources({
-        { name = 'nvim_lsp', priority = 1000 },
-        { name = 'luasnip', priority = 900 },
-    })
-})
-
--- Text file overrides (markdown, tex, txt)
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "markdown", "tex", "text" },
-    callback = function()
-        vim.opt_local.wrap = true
-        vim.opt_local.linebreak = true
-        vim.opt_local.spell = true
-        vim.opt_local.spelllang = { 'en', 'it' }
-
-        cmp.setup.buffer({
-            sources = cmp.config.sources({
-                vim.bo.filetype == 'tex' and { name = 'nvim_lsp', priority = 1000 } or { name = 'spell', priority = 1000 },
-                vim.bo.filetype == 'tex' and { name = 'spell', priority = 900 } or { name = 'nvim_lsp', priority = 900 },
-                { name = 'buffer', priority = 800 },
-                { name = 'luasnip', priority = 700 },
-                { name = 'path', priority = 600 },
-            }),
-            mapping = cmp.mapping.preset.insert({
-                ['<C-n>'] = cmp.mapping.select_next_item(),
-                ['<C-p>'] = cmp.mapping.select_prev_item(),
-                ['<Tab>'] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.select_next_item()
-                    else
-                        fallback()
-                    end
-                end),
-            })
-        })
-
-        -- Set light color scheme
-        -- vim.opt.background = "light"
-    end
-})
-
-vim.api.nvim_create_autocmd("BufEnter", {
-    pattern = {"*.md", "*.txt", "*.tex"},
-    callback = function()
-        vim.defer_fn(function()
-            vim.o.background = "light"
-            vim.cmd("colorscheme rose-pine-dawn")
-        end, 50)
-    end,
-})
-
-vim.api.nvim_create_autocmd("BufLeave", {
-    pattern = {"*.md", "*.txt", "*.tex"},
-    callback = function()
-        vim.defer_fn(function()
-            vim.o.background = "dark"
-            vim.cmd("colorscheme kanagawa-dragon")
-        end, 50)
-    end,
-})
-
-vim.g.do_filetype_lua = 1
-
--- Add custom filetypes
-vim.filetype.add({
-    extension = {
-        cnf = "dimacs",
-        icnf = "icnf",
-        p = "tptp",
-        smt2 = "smt2",
-        zf = "zf"
-    }
-})
-
-local lsp = require('lsp-zero')
-lsp.configure('dolmenls', {})
-lsp.setup_servers({'dolmenls'})
--- vim.opt.fillchars = { stl = "-" }
-
 require("post")
-
-print("Diego Oniarti")
