@@ -57,6 +57,7 @@ require("lazy").setup({
     -------------------- Telescope --------------------
     { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" }, cmd = "Telescope" },
     { "nvim-telescope/telescope-file-browser.nvim", cmd = "Telescope" },
+    { "nvim-telescope/telescope-media-files.nvim" },
 
     -------------------- Utilities --------------------
     {
@@ -108,6 +109,17 @@ require("mini.starter").setup()
 -- UI tweaks
 require("neoscroll").setup({})
 require("luasnip.loaders.from_vscode").lazy_load()
+require('telescope').load_extension('media_files')
+
+local highlight = {
+    "RainbowViolet",
+    "RainbowCyan",
+    "RainbowRed",
+    "RainbowYellow",
+    "RainbowBlue",
+    "RainbowOrange",
+    "RainbowGreen",
+}
 
 -- Rainbow indent
 local hooks = require "ibl.hooks"
