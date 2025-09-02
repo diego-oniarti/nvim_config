@@ -57,6 +57,7 @@ require("lazy").setup({
     -------------------- Telescope --------------------
     { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" }, cmd = "Telescope" },
     { "nvim-telescope/telescope-file-browser.nvim", cmd = "Telescope" },
+    { "nvim-telescope/telescope-media-files.nvim" },
 
     -------------------- Utilities --------------------
     {
@@ -73,9 +74,10 @@ require("lazy").setup({
     { "lervag/vimtex", ft = { "tex" } },
     -- { "folke/trouble.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, cmd = "Trouble" },
     -- { "azabiong/vim-highlighter", event = "BufReadPre" },
-    { "folke/which-key.nvim", event = "VeryLazy", opts = {
-        delay = 5000
-    } },
+    { "folke/which-key.nvim", event = "VeryLazy", opts = { delay = 5000 } },
+    { "nvzone/volt", lazy = true },
+    { "nvzone/minty", event = "VeryLazy", cmd = { "Shades", "Huefy" } },
+    { "nvzone/showkeys", event = "VeryLazy", cmd = "ShowkeysToggle", opts = { timeout = 1, maxkeys = 5  } },
 
     -------------------- Colors --------------------
     { "rose-pine/neovim", name = "rose-pine", lazy = true },
@@ -86,28 +88,37 @@ require("lazy").setup({
     { "andreasvc/vim-256noir", lazy = true },
     { "Alligator/accent.vim", lazy = true },
 }, {
-        performance = {
-            rtp = {
-                disabled_plugins = {
-                    "gzip",
-                    "matchit",
-                    "tarPlugin",
-                    "tohtml",
-                    "tutor",
-                    "zipPlugin",
-                },
+    performance = {
+        rtp = {
+            disabled_plugins = {
+                "gzip",
+                "matchit",
+                "tarPlugin",
+                "tohtml",
+                "tutor",
+                "zipPlugin",
             },
         },
-    }
-)
-
-require("mini.sessions").setup({
+    },
 })
+
+require("mini.sessions").setup()
 require("mini.starter").setup()
 
 -- UI tweaks
 require("neoscroll").setup({})
 require("luasnip.loaders.from_vscode").lazy_load()
+require('telescope').load_extension('media_files')
+
+local highlight = {
+    "RainbowViolet",
+    "RainbowCyan",
+    "RainbowRed",
+    "RainbowYellow",
+    "RainbowBlue",
+    "RainbowOrange",
+    "RainbowGreen",
+}
 
 -- Rainbow indent
 local hooks = require "ibl.hooks"
