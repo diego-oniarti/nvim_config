@@ -41,3 +41,10 @@ vim.opt.foldminlines = 4
 
 vim.opt.guicursor = 'i:ver50'
 vim.opt.cursorline = true
+
+vim.opt.list = true
+vim.opt.listchars = {
+    trail = "·",
+    tab   = ">-",
+    nbsp  = "+",
+}
