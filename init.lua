@@ -1,5 +1,7 @@
 require("pre")
 
+local sysname = vim.loop.os_uname().sysname
+
 -- Lazy.nvim setup
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
@@ -71,7 +73,20 @@ require("lazy").setup({
             { "<C-s>l", function() require("harpoon").list():next() end, desc = "Harpoon Next" },
         }
     },
-    { "lervag/vimtex", ft = { "tex" } },
+    {
+        "lervag/vimtex", ft = { "tex" }, config = function()
+            vim.g.tex_flavor = "latex"
+            vim.g.vimtex_version_check=0
+            vim.g.vimtex_compiler_method = "latexmk"
+            if sysname == "Windows_NT" then
+                vim.g.vimtex_view_method = "general"
+                vim.g.vimtex_view_general_viewer = "SumatraPDF"
+                vim.g.vimtex_view_general_options = "-reuse-instance -forward-search @tex @line @pdf"
+            elseif sysname == "Linux" then
+                vim.g.vimtex_view_method = "zathura"
+            end
+        end
+    },
     -- { "folke/trouble.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, cmd = "Trouble" },
     -- { "azabiong/vim-highlighter", event = "BufReadPre" },
     { "folke/which-key.nvim", event = "VeryLazy", opts = { delay = 5000 } },
@@ -80,13 +95,47 @@ require("lazy").setup({
     { "nvzone/showkeys", event = "VeryLazy", cmd = "ShowkeysToggle", opts = { timeout = 1, maxkeys = 5  } },
 
     -------------------- Colors --------------------
-    { "rose-pine/neovim", name = "rose-pine", lazy = true },
-    { "rakr/vim-one", name = "one", lazy = true },
-    { "rjshkhr/shadow.nvim", lazy = true, config = function() vim.opt.termguicolors = true vim.cmd.colorscheme("shadow") end },
-    { "ku1ik/vim-monokai", lazy = true },
-    { "rebelot/kanagawa.nvim", lazy = true },
-    { "andreasvc/vim-256noir", lazy = true },
-    { "Alligator/accent.vim", lazy = true },
+    { "rose-pine/neovim", name = "rose-pine", lazy = false, priority = 1000 },
+    { "rakr/vim-one", name = "one", lazy = false, priority = 1000 },
+    { "rjshkhr/shadow.nvim", lazy = false, priority = 1000, config = function() vim.opt.termguicolors = true vim.cmd.colorscheme("shadow") end },
+    { "ku1ik/vim-monokai", lazy = false, priority = 1000 },
+    { "rebelot/kanagawa.nvim", lazy = false, priority = 1000 },
+    { "andreasvc/vim-256noir", lazy = false, priority = 1000 },
+    { "preservim/vim-colors-pencil", lazy = false, priority = 1000 },
+    { "Alligator/accent.vim", lazy = false, priority = 1000 },
+
+    ----------------- Obsidian ---------------------
+    {
+        "obsidian-nvim/obsidian.nvim",
+        version = "*",
+        ft = "markdown",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "hrsh7th/nvim-cmp",
+            "nvim-telescope/telescope.nvim",
+            "artempyanykh/marksman",
+        },
+        opts = function()
+            local diary_path
+            if sysname == "Windows_NT" then
+                diary_path = "E:\\Documenti\\Diario2"
+            elseif sysname == "Linux" then
+                diary_path = "~/Desktop/diario"
+            end
+
+            return {
+                workspaces = {
+                    { name = "diary", path = diary_path },
+                },
+                preferred_link_style = "wiki",
+                daily_notes = {
+                    folder = "days",
+                    date_format = "%Y-%m-%d",
+                },
+            }
+        end,
+    }
+
 }, {
     performance = {
         rtp = {
