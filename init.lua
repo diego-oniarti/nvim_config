@@ -39,6 +39,7 @@ require("lazy").setup({
         { "williamboman/mason.nvim", build = ":MasonUpdate" },
         { "williamboman/mason-lspconfig.nvim" },
         { "hrsh7th/nvim-cmp" },
+        { "f3fora/cmp-spell" },
         { "hrsh7th/cmp-nvim-lsp" },
         { "L3MON4D3/LuaSnip" },
         { "saadparwaiz1/cmp_luasnip" },
@@ -243,8 +244,10 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.spelllang = { 'en', 'it' }
         cmp.setup.buffer({
             sources = cmp.config.sources({
-                { name = 'spell', priority = 1000 },
-                { name = 'buffer', priority = 800 },
+                { name = 'nvim_lsp', priority = 1000 },
+                { name = 'luasnip', priority = 900 },
+                { name = 'spell', priority = 800 },
+                { name = 'buffer', priority = 700 },
             })
         })
     end
