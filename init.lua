@@ -22,16 +22,16 @@ require("lazy").setup({
     -------------------- UI --------------------
     { "nvim-tree/nvim-web-devicons", lazy = true },
     { "nvim-lualine/lualine.nvim", event = "VeryLazy" },
-    { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {}, event = "BufReadPre" },
+    { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {}, event = "VeryLazy" },
     { "nvim-mini/mini.nvim" },
     { "karb94/neoscroll.nvim", event = "VeryLazy", config = function() require('neoscroll').setup() end },
 
     -------------------- Editing --------------------
-    { "tpope/vim-surround", event = "BufReadPre" },
-    { "tpope/vim-repeat", event = "BufReadPre" },
+    { "tpope/vim-surround", event = "VeryLazy" },
+    { "tpope/vim-repeat", event = "VeryLazy" },
     {
         "junegunn/vim-easy-align",
-        event = "BufReadPre",
+        event = "VeryLazy",
         keys = {
             { "ga", "<Plug>(EasyAlign)", mode = "x" },
             { "ga", "<Plug>(EasyAlign)", mode = "n" },
@@ -39,7 +39,7 @@ require("lazy").setup({
     },
     { "tpope/vim-fugitive" },
     { "junegunn/gv.vim", lazt = true},
-    { "airblade/vim-gitgutter", event = "BufReadPre" },
+    { "airblade/vim-gitgutter", event = "VeryLazy" },
 
     -------------------- LSP & Completion --------------------
     { "VonHeikemen/lsp-zero.nvim", branch = "v4.x", dependencies = {
@@ -54,7 +54,7 @@ require("lazy").setup({
         { "rafamadriz/friendly-snippets" },
         {
             'aznhe21/actions-preview.nvim',
-            event = "BufReadPre",
+            event = "VeryLazy",
             keys = { {"<C-s>z", function() require("actions-preview").code_actions() end, desc = "Code Actions"} }
         }
 
@@ -62,7 +62,7 @@ require("lazy").setup({
 
     -------------------- Syntax & Highlighting --------------------
     { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", event = { "BufReadPost", "BufNewFile" } },
-    { "norcalli/nvim-colorizer.lua", event = "BufReadPre" },
+    { "norcalli/nvim-colorizer.lua", event = "VeryLazy" },
     { "MeanderingProgrammer/render-markdown.nvim", opts = {}, ft = { "markdown" } },
 
     -------------------- Telescope --------------------
@@ -97,11 +97,22 @@ require("lazy").setup({
         end
     },
     -- { "folke/trouble.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, cmd = "Trouble" },
-    -- { "azabiong/vim-highlighter", event = "BufReadPre" },
+    -- { "azabiong/vim-highlighter", event = "VeryLazy" },
     { "folke/which-key.nvim", event = "VeryLazy", opts = { delay = 5000 } },
     { "nvzone/volt", lazy = true },
     { "nvzone/minty", event = "VeryLazy", cmd = { "Shades", "Huefy" } },
     { "nvzone/showkeys", event = "VeryLazy", cmd = "ShowkeysToggle", opts = { timeout = 1, maxkeys = 5  } },
+    {
+        'derektata/lorem.nvim',
+        config = function()
+            require("lorem").opts {
+                sentence_length = "mixed",
+                comma_chance = 0.0,
+                max_commas = 2,
+                debounce_ms = 200,
+            }
+        end
+    },
 
     -------------------- Colors --------------------
     { "rose-pine/neovim", name = "rose-pine", lazy = false, priority = 1000 },
@@ -278,6 +289,7 @@ function ClearBg()
     vim.api.nvim_set_hl(0, "LineNr", {bg="none"})
     vim.api.nvim_set_hl(0, "StatusLike", {bg="none"})
     vim.api.nvim_set_hl(0, "VertSplit", {bg="none"})
+    vim.api.nvim_set_hl(0, "CursorLine", {bg="none"})
 end
 
 require("post")
