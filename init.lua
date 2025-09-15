@@ -29,6 +29,14 @@ require("lazy").setup({
     -------------------- Editing --------------------
     { "tpope/vim-surround", event = "BufReadPre" },
     { "tpope/vim-repeat", event = "BufReadPre" },
+    {
+        "junegunn/vim-easy-align",
+        event = "BufReadPre",
+        keys = {
+            { "ga", "<Plug>(EasyAlign)", mode = "x" },
+            { "ga", "<Plug>(EasyAlign)", mode = "n" },
+        },
+    },
     { "tpope/vim-fugitive" },
     { "junegunn/gv.vim", lazt = true},
     { "airblade/vim-gitgutter", event = "BufReadPre" },
