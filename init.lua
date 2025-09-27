@@ -178,6 +178,14 @@ require("mini.starter").setup()
 require("neoscroll").setup({})
 require("luasnip.loaders.from_vscode").lazy_load()
 require('telescope').load_extension('media_files')
+require('telescope').setup({
+    pickers = {
+        find_files = {
+            hidden = true,
+            no_ignore = true,
+        }
+    }
+})
 
 local highlight = {
     "RainbowViolet",
