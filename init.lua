@@ -221,21 +221,24 @@ require('lualine').setup {
 vim.cmd.colorscheme("kanagawa-dragon")
 
 -- LSP-zero + Mason setup
-local lsp = require('lsp-zero').preset({})
+local lsp_zero = require('lsp-zero')
 
-lsp.on_attach(function(client, bufnr)
-    lsp.default_keymaps({ buffer = bufnr })
-end)
-
+-- Set up mason
 require('mason').setup()
+
 require('mason-lspconfig').setup({
     automatic_installation = false,
     handlers = {
-        lsp.default_setup,
-    }
+        function(server_name)
+            lsp_zero.configure(server_name, {
+                on_attach = function(client, bufnr)
+                    lsp_zero.default_keymaps({ buffer = bufnr })
+                end,
+            })
+        end,
+    },
 })
 
-lsp.setup()
 
 -- CMP + LuaSnip setup
 local cmp = require('cmp')
@@ -299,5 +302,7 @@ function ClearBg()
     vim.api.nvim_set_hl(0, "VertSplit", {bg="none"})
     vim.api.nvim_set_hl(0, "CursorLine", {bg="none"})
 end
+
+ClearBg()
 
 require("post")
