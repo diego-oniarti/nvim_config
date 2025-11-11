@@ -39,7 +39,7 @@ require("lazy").setup({
     },
     { "tpope/vim-fugitive" },
     { "junegunn/gv.vim", lazt = true},
-    { "airblade/vim-gitgutter", event = "VeryLazy" },
+    { "airblade/vim-gitgutter", event = { "BufReadPre", "BufNewFile" } },
 
     -------------------- LSP & Completion --------------------
     { "VonHeikemen/lsp-zero.nvim", branch = "v4.x", dependencies = {
@@ -64,7 +64,12 @@ require("lazy").setup({
     { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", event = { "BufReadPost", "BufNewFile" } },
     { "norcalli/nvim-colorizer.lua", event = "VeryLazy" },
     { "MeanderingProgrammer/render-markdown.nvim", opts = {}, ft = { "markdown" } },
-
+    {
+        "azabiong/vim-highlighter",
+        init = function()
+            -- settings
+        end,
+    },
     -------------------- Telescope --------------------
     { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" }, cmd = "Telescope" },
     { "nvim-telescope/telescope-file-browser.nvim", cmd = "Telescope" },
@@ -154,7 +159,18 @@ require("lazy").setup({
                 },
             }
         end,
-    }
+    },
+
+    -- ROCQ --
+    {
+        "whonore/Coqtail",
+        ft = "coq", -- only load for Coq files
+        config = function()
+            -- optional: Coqtail config
+            vim.g.coqtail_noimap = 1     -- disable Coqtail's insert mode mappings
+            vim.g.coqtail_nomap = 1      -- disable all default mappings
+        end,
+    },
 
 }, {
     performance = {
@@ -173,6 +189,35 @@ require("lazy").setup({
 
 require("mini.sessions").setup()
 require("mini.starter").setup()
+
+require('render-markdown').setup({
+    checkbox = {
+        enabled = true,
+        bullet = true,
+        unchecked = {
+            icon = '󰄱 ',
+            highlight = 'RenderMarkdownUnchecked',
+            scope_highlight = nil,
+        },
+        checked = {
+            icon = '󰱒 ',
+            highlight = 'RenderMarkdownChecked',
+            scope_highlight = nil,
+        },
+        -- Define custom checkbox states, more involved, not part of the markdown grammar.
+        -- As a result this requires neovim >= 0.10.0 since it relies on 'inline' extmarks.
+        -- The key is for healthcheck and to allow users to change its values, value type below.
+        -- | raw             | matched against the raw text of a 'shortcut_link'           |
+        -- | rendered        | replaces the 'raw' value when rendering                     |
+        -- | highlight       | highlight for the 'rendered' icon                           |
+        -- | scope_highlight | optional highlight for item associated with custom checkbox |
+        -- stylua: ignore
+        custom = {
+            todo   = { raw = '[-]', rendered = '󰥔 ', highlight = 'RenderMarkdownTodo', scope_highlight = nil },
+            reject = { raw = '[!]', rendered = '✗ ', highlight = 'RenderMarkdownReject', scope_highlight = nil },
+        },
+    },
+})
 
 -- UI tweaks
 require("neoscroll").setup({})
@@ -299,5 +344,7 @@ function ClearBg()
     vim.api.nvim_set_hl(0, "VertSplit", {bg="none"})
     vim.api.nvim_set_hl(0, "CursorLine", {bg="none"})
 end
+
+ClearBg()
 
 require("post")

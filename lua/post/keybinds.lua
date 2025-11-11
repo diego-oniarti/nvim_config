@@ -11,11 +11,17 @@ vim.keymap.set('n', '<C-s>f', builtin.find_files, {})
 vim.keymap.set('n', '<C-s>c', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>s', builtin.lsp_document_symbols, {})
 vim.keymap.set('n', '<leader>r', builtin.lsp_references, {})
-vim.keymap.set('n', '<leader>h', vim.lsp.buf.hover, {})
+-- vim.keymap.set('n', '<leader>h', vim.lsp.buf.hover, {})
 vim.keymap.set('n', '<leader>n', vim.lsp.buf.rename, {})
 
 -- open file_browser with the path of the current buffer
 vim.keymap.set("n", "<space>fb", ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
+
+vim.keymap.set("n", "<leader>cn", ":CoqNext<CR>")
+vim.keymap.set("n", "<leader>cp", ":CoqUndo<CR>")
+vim.keymap.set("n", "<leader>cr", ":CoqToLine<CR>")
+vim.keymap.set("n", "<leader>cc", ":CoqStart<CR>")
+vim.keymap.set("n", "<leader>cq", ":CoqStop<CR>")
 
 vim.keymap.set('n', '<leader>bd', ':bp | sp | bn | bd!<CR>')
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
