@@ -72,8 +72,10 @@ require("lazy").setup({
     },
     -------------------- Telescope --------------------
     { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" }, cmd = "Telescope" },
-    { "nvim-telescope/telescope-file-browser.nvim", cmd = "Telescope" },
-    { "nvim-telescope/telescope-media-files.nvim" },
+    {
+        "nvim-telescope/telescope-file-browser.nvim",
+        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+    },
 
     -------------------- Utilities --------------------
     {
@@ -222,15 +224,15 @@ require('render-markdown').setup({
 -- UI tweaks
 require("neoscroll").setup({})
 require("luasnip.loaders.from_vscode").lazy_load()
-require('telescope').load_extension('media_files')
 require('telescope').setup({
     pickers = {
         find_files = {
-            hidden = true,
+            -- hidden = true,
             no_ignore = true,
         }
     }
 })
+require("telescope").load_extension "file_browser"
 
 local highlight = {
     "RainbowViolet",
@@ -345,7 +347,7 @@ function ClearBg()
     vim.api.nvim_set_hl(0, "LineNr", {bg="none"})
     vim.api.nvim_set_hl(0, "StatusLike", {bg="none"})
     vim.api.nvim_set_hl(0, "VertSplit", {bg="none"})
-    vim.api.nvim_set_hl(0, "CursorLine", {bg="none"})
+    vim.api.nvim_set_hl(0, "CursorLine", {bg="#282727"})
 end
 
 ClearBg()
