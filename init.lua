@@ -154,7 +154,19 @@ require("lazy").setup({
                 },
             }
         end,
-    }
+    },
+
+    -- COQ --
+    {
+        "whonore/Coqtail",
+        ft = "coq", -- only load for Coq files
+        config = function()
+            -- optional: Coqtail config
+            vim.g.coqtail_noimap = 1     -- disable Coqtail's insert mode mappings
+            vim.g.coqtail_nomap = 1      -- disable all default mappings
+        end,
+    },
+
 
 }, {
     performance = {

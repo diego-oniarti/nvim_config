@@ -15,7 +15,13 @@ vim.keymap.set('n', '<leader>h', vim.lsp.buf.hover, {})
 vim.keymap.set('n', '<leader>n', vim.lsp.buf.rename, {})
 
 -- open file_browser with the path of the current buffer
-vim.keymap.set("n", "<space>fb", ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
+vim.keymap.set("n", "<leader>fb", function()
+    local fb = require("telescope").extensions.file_browser
+    fb.file_browser({
+        path = vim.fn.expand("%:p:h"),
+        select_buffer = true,
+    })
+end, { noremap = true })
 
 vim.keymap.set('n', '<leader>bd', ':bp | sp | bn | bd!<CR>')
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
@@ -37,3 +43,15 @@ end, { desc = "Previous error" })
 vim.keymap.set("n", "<leader>d", function()
   vim.diagnostic.setqflist({ open = true })
 end, { desc = "Quickfix: all project diagnostics" })
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "coq", "v" },
+    callback = function()
+        local opts = { buffer = true, silent = true }
+        vim.keymap.set("n", "<leader>cn", ":CoqNext<CR>", opts)       -- Step forward
+        vim.keymap.set("n", "<leader>cp", ":CoqUndo<CR>", opts)       -- Step back
+        vim.keymap.set("n", "<leader>cr", ":CoqToLine<CR>", opts)   -- Run to cursor
+        vim.keymap.set("n", "<leader>cc", ":CoqStart<CR>", opts)      -- Start coqtop
+        vim.keymap.set("n", "<leader>cq", ":CoqStop<CR>", opts)       -- Quit coqtop
+    end,
+})
