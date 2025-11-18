@@ -346,7 +346,7 @@ function ClearBg()
     vim.api.nvim_set_hl(0, "LineNr", {bg="none"})
     vim.api.nvim_set_hl(0, "StatusLike", {bg="none"})
     vim.api.nvim_set_hl(0, "VertSplit", {bg="none"})
-    vim.api.nvim_set_hl(0, "CursorLine", {bg="#282727"})
+    vim.api.nvim_set_hl(0, "CursorLine", {bg="#373836"})
 end
 
 -- ClearBg()
