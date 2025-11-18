@@ -151,6 +151,7 @@ require("lazy").setup({
             end
 
             return {
+                legacy_commands = false,
                 workspaces = {
                     { name = "diary", path = diary_path },
                 },
@@ -341,6 +342,7 @@ function ColorMyPencils(color)
 end
 
 function ClearBg()
+    vim.cmd.colorscheme("kanagawa-dragon")
     vim.api.nvim_set_hl(0, "Normal", {bg="none"})
     vim.api.nvim_set_hl(0, "NormalFloat", {bg="none"})
     vim.api.nvim_set_hl(0, "LineNr", {bg="none"})
@@ -349,6 +351,6 @@ function ClearBg()
     vim.api.nvim_set_hl(0, "CursorLine", {bg="#373836"})
 end
 
--- ClearBg()
+ClearBg()
 
 require("post")
