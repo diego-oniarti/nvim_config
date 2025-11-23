@@ -17,12 +17,68 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local highlight = {
+    "RainbowViolet",
+    "RainbowCyan",
+    "RainbowRed",
+    "RainbowYellow",
+    "RainbowBlue",
+    "RainbowOrange",
+    "RainbowGreen",
+}
+
 -- Plugins
 require("lazy").setup({
     -------------------- UI --------------------
     { "nvim-tree/nvim-web-devicons", lazy = true },
-    { "nvim-lualine/lualine.nvim", event = "VeryLazy" },
-    { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {}, event = "VeryLazy" },
+    {
+        "nvim-lualine/lualine.nvim",
+        event = "VeryLazy",
+        config = function ()
+            require('lualine').setup {
+                tabline = {
+                    lualine_a = { { 'buffers', show_filename_only = false }, },
+                    lualine_z = {'tabs'}
+                }
+            }
+        end
+    },
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
+        event = "BufReadPost",
+
+        opts = {
+            indent = {
+                highlight = "IblIndent",
+            },
+            scope = {
+                enabled = true,
+                highlight = highlight,
+            },
+        },
+
+        config = function(_, opts)
+            local hooks = require "ibl.hooks"
+
+            hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+                -- rainbow colors
+                vim.api.nvim_set_hl(0, "RainbowRed",    { fg = "#F09EA7" })
+                vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#FAFABE" })
+                vim.api.nvim_set_hl(0, "RainbowBlue",   { fg = "#C7CAFF" })
+                vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#F6CA94" })
+                vim.api.nvim_set_hl(0, "RainbowGreen",  { fg = "#C1EBC0" })
+                vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#CDABEB" })
+                vim.api.nvim_set_hl(0, "RainbowCyan",   { fg = "#F6C2F3" })
+                vim.api.nvim_set_hl(0, "IblIndent",     { fg = "#535353" })
+            end)
+
+            vim.g.rainbow_delimiters = { highlight = highlight }
+            require("ibl").setup(opts)
+
+            hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+        end,
+    },
     { "nvim-mini/mini.nvim" },
     { "karb94/neoscroll.nvim", event = "VeryLazy", config = function() require('neoscroll').setup() end },
 
@@ -57,24 +113,59 @@ require("lazy").setup({
             event = "VeryLazy",
             keys = { {"<C-s>z", function() require("actions-preview").code_actions() end, desc = "Code Actions"} }
         }
-
     }},
 
     -------------------- Syntax & Highlighting --------------------
     { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", event = { "BufReadPost", "BufNewFile" } },
     { "norcalli/nvim-colorizer.lua", event = "VeryLazy" },
-    { "MeanderingProgrammer/render-markdown.nvim", opts = {}, ft = { "markdown" } },
     {
-        "azabiong/vim-highlighter",
-        init = function()
-            -- settings
+        "MeanderingProgrammer/render-markdown.nvim",
+        ft = { "markdown" },
+        config = function()
+            require('render-markdown').setup({
+                checkbox = {
+                    enabled = true,
+                    bullet = true,
+                    unchecked = {
+                        icon = '󰄱 ',
+                        highlight = 'RenderMarkdownUnchecked',
+                    },
+                    checked = {
+                        icon = '󰱒 ',
+                        highlight = 'RenderMarkdownChecked',
+                    },
+                    custom = {
+                        todo   = { raw = '[-]', rendered = '󰥔 ', highlight = 'RenderMarkdownTodo' },
+                        reject = { raw = '[!]', rendered = '✗ ',   highlight = 'RenderMarkdownReject' },
+                    },
+                },
+            })
         end,
     },
+    { "azabiong/vim-highlighter" },
     -------------------- Telescope --------------------
-    { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" }, cmd = "Telescope" },
+    {
+        "nvim-telescope/telescope.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        cmd = "Telescope",
+        config = function ()
+            require('telescope').setup({
+                pickers = {
+                    find_files = {
+                        -- hidden = true,
+                        no_ignore = true,
+                    }
+                }
+            })
+        end,
+    },
     {
         "nvim-telescope/telescope-file-browser.nvim",
-        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+        cmd = 'Telescope',
+        config = function ()
+            require("telescope").load_extension "file_browser"
+        end,
     },
 
     -------------------- Utilities --------------------
@@ -192,77 +283,7 @@ require("lazy").setup({
 require("mini.sessions").setup()
 require("mini.starter").setup()
 
-require('render-markdown').setup({
-    checkbox = {
-        enabled = true,
-        bullet = true,
-        unchecked = {
-            icon = '󰄱 ',
-            highlight = 'RenderMarkdownUnchecked',
-            scope_highlight = nil,
-        },
-        checked = {
-            icon = '󰱒 ',
-            highlight = 'RenderMarkdownChecked',
-            scope_highlight = nil,
-        },
-        -- Define custom checkbox states, more involved, not part of the markdown grammar.
-        -- As a result this requires neovim >= 0.10.0 since it relies on 'inline' extmarks.
-        -- The key is for healthcheck and to allow users to change its values, value type below.
-        -- | raw             | matched against the raw text of a 'shortcut_link'           |
-        -- | rendered        | replaces the 'raw' value when rendering                     |
-        -- | highlight       | highlight for the 'rendered' icon                           |
-        -- | scope_highlight | optional highlight for item associated with custom checkbox |
-        -- stylua: ignore
-        custom = {
-            todo   = { raw = '[-]', rendered = '󰥔 ', highlight = 'RenderMarkdownTodo', scope_highlight = nil },
-            reject = { raw = '[!]', rendered = '✗ ', highlight = 'RenderMarkdownReject', scope_highlight = nil },
-        },
-    },
-})
-
--- UI tweaks
-require("neoscroll").setup({})
 require("luasnip.loaders.from_vscode").lazy_load()
-require('telescope').setup({
-    pickers = {
-        find_files = {
-            -- hidden = true,
-            no_ignore = true,
-        }
-    }
-})
-require("telescope").load_extension "file_browser"
-
-local highlight = {
-    "RainbowViolet",
-    "RainbowCyan",
-    "RainbowRed",
-    "RainbowYellow",
-    "RainbowBlue",
-    "RainbowOrange",
-    "RainbowGreen",
-}
-
--- Rainbow indent
-local hooks = require "ibl.hooks"
-hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-    vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#F09EA7" })
-    vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#FAFABE" })
-    vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#C7CAFF" })
-    vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#F6CA94" })
-    vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#C1EBC0" })
-    vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#CDABEB" })
-    vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#F6C2F3" })
-end)
-
--- Lualine
-require('lualine').setup {
-    tabline = {
-        lualine_a = {{ 'buffers', show_filename_only = false }},
-        lualine_z = {'tabs'}
-    }
-}
 
 -- Colorscheme
 vim.cmd.colorscheme("kanagawa-dragon")
