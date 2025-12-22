@@ -153,7 +153,7 @@ require("lazy").setup({
                 pickers = {
                     find_files = {
                         -- hidden = true,
-                        no_ignore = true,
+                        -- no_ignore = true,
                     }
                 }
             })
@@ -372,6 +372,6 @@ function ClearBg()
     vim.api.nvim_set_hl(0, "CursorLine", {bg="#373836"})
 end
 
-ClearBg()
+-- ClearBg()
 
 require("post")
