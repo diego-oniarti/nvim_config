@@ -31,7 +31,7 @@ vim.opt.colorcolumn = "85"
 
 vim.g.mapleader = " "
 
-vim.opt.foldcolumn = "0"
+vim.opt.foldcolumn = "1"
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldenable = false
@@ -42,9 +42,14 @@ vim.opt.foldminlines = 4
 vim.opt.guicursor = 'i:ver50'
 vim.opt.cursorline = true
 
+vim.opt.conceallevel = 2
+
 vim.opt.list = true
 vim.opt.listchars = {
     trail = "·",
     tab   = ">-",
     nbsp  = "+",
 }
+
+vim.opt.spell = true
+vim.opt.spelllang = { 'en', 'it' }
