@@ -272,7 +272,6 @@ require("lazy").setup({
                 "gzip",
                 "matchit",
                 "tarPlugin",
-                "tohtml",
                 "tutor",
                 "zipPlugin",
             },
@@ -372,6 +371,70 @@ function ClearBg()
     vim.api.nvim_set_hl(0, "CursorLine", {bg="#373836"})
 end
 
-ClearBg()
+-- ClearBg()
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "tex",
+    callback = function(ev)
+        vim.api.nvim_buf_create_user_command(ev.buf, "PasteImage", function(opts)
+            vim.fn.mkdir("images", "p")
+
+            local function finalize(name)
+                if not name or name == "" then
+                    return
+                end
+
+                local filename = name .. ".png"
+                local src = vim.fn.expand("~/Pictures/screenshot.png")
+                local dst = "images/" .. filename
+
+                vim.fn.system({ "cp", src, dst })
+
+                local lines = {
+                    "\\begin{figure}[h!]",
+                    "    \\centering",
+                    "    \\includegraphics[width=0.8\\linewidth]{images/" .. filename .. "}",
+                    "    \\caption{fig:" .. name .. "}",
+                    "\\end{figure}",
+                }
+
+                vim.api.nvim_put(lines, "l", true, true)
+            end
+
+            if opts.args ~= "" then
+                finalize(opts.args)
+            else
+                vim.ui.input({ prompt = "Image name: " }, finalize)
+            end
+        end, {
+        desc = "Paste an image in a LaTeX file",
+        nargs = "?",
+    })
+end,
+})
+
+vim.lsp.config("lua_ls", {
+    settings = {
+        Lua = {
+            runtime = {
+                version = "LuaJIT",
+            },
+            diagnostics = {
+                globals = { "vim" },
+            },
+            workspace = {
+                library = {
+                    vim.env.VIMRUNTIME,
+                },
+                checkThirdParty = false,
+            },
+            telemetry = {
+                enable = false,
+            },
+        },
+    },
+})
+
+vim.lsp.enable("lua_ls")
 
 require("post")
