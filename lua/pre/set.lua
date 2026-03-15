@@ -47,7 +47,7 @@ vim.opt.conceallevel = 2
 vim.opt.list = true
 vim.opt.listchars = {
     trail = "·",
-    tab   = ">-",
+    tab   = "│-",
     nbsp  = "+",
 }
 

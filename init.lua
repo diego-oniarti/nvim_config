@@ -221,6 +221,7 @@ require("lazy").setup({
     { "andreasvc/vim-256noir", lazy = false, priority = 1000 },
     { "preservim/vim-colors-pencil", lazy = false, priority = 1000 },
     { "Alligator/accent.vim", lazy = false, priority = 1000 },
+    { "hyperb1iss/silkcircuit-nvim", lazy = false, priority = 1000 },
 
     ----------------- Obsidian ---------------------
     {
@@ -272,7 +273,6 @@ require("lazy").setup({
                 "gzip",
                 "matchit",
                 "tarPlugin",
-                "tohtml",
                 "tutor",
                 "zipPlugin",
             },
@@ -286,7 +286,7 @@ require("mini.starter").setup()
 require("luasnip.loaders.from_vscode").lazy_load()
 
 -- Colorscheme
-vim.cmd.colorscheme("kanagawa-dragon")
+vim.cmd.colorscheme("silkcircuit")
 
 -- LSP-zero + Mason setup
 local lsp_zero = require('lsp-zero')
@@ -363,7 +363,7 @@ function ColorMyPencils(color)
 end
 
 function ClearBg()
-    vim.cmd.colorscheme("kanagawa-dragon")
+    -- vim.cmd.colorscheme("kanagawa-dragon")
     vim.api.nvim_set_hl(0, "Normal", {bg="none"})
     vim.api.nvim_set_hl(0, "NormalFloat", {bg="none"})
     vim.api.nvim_set_hl(0, "LineNr", {bg="none"})
@@ -373,5 +373,68 @@ function ClearBg()
 end
 
 -- ClearBg()
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "tex",
+    callback = function(ev)
+        vim.api.nvim_buf_create_user_command(ev.buf, "PasteImage", function(opts)
+            vim.fn.mkdir("images", "p")
+
+            local function finalize(name)
+                if not name or name == "" then
+                    return
+                end
+
+                local filename = name .. ".png"
+                local src = vim.fn.expand("~/Pictures/screenshot.png")
+                local dst = "images/" .. filename
+
+                vim.fn.system({ "cp", src, dst })
+
+                local lines = {
+                    "\\begin{figure}[h!]",
+                    "    \\centering",
+                    "    \\includegraphics[width=0.8\\linewidth]{images/" .. filename .. "}",
+                    "    \\caption{fig:" .. name .. "}",
+                    "\\end{figure}",
+                }
+
+                vim.api.nvim_put(lines, "l", true, true)
+            end
+
+            if opts.args ~= "" then
+                finalize(opts.args)
+            else
+                vim.ui.input({ prompt = "Image name: " }, finalize)
+            end
+        end, {
+        desc = "Paste an image in a LaTeX file",
+        nargs = "?",
+    })
+end,
+})
+
+vim.lsp.config("lua_ls", {
+    settings = {
+        Lua = {
+            runtime = {
+                version = "LuaJIT",
+            },
+            diagnostics = {
+                globals = { "vim" },
+            },
+            workspace = {
+                library = {
+                    vim.env.VIMRUNTIME,
+                },
+                checkThirdParty = false,
+            },
+            telemetry = {
+                enable = false,
+            },
+        },
+    },
+})
+
+vim.lsp.enable("lua_ls")
 
 require("post")
