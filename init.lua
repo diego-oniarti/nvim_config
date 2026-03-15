@@ -221,6 +221,7 @@ require("lazy").setup({
     { "andreasvc/vim-256noir", lazy = false, priority = 1000 },
     { "preservim/vim-colors-pencil", lazy = false, priority = 1000 },
     { "Alligator/accent.vim", lazy = false, priority = 1000 },
+    { "hyperb1iss/silkcircuit-nvim", lazy = false, priority = 1000 },
 
     ----------------- Obsidian ---------------------
     {
@@ -285,7 +286,7 @@ require("mini.starter").setup()
 require("luasnip.loaders.from_vscode").lazy_load()
 
 -- Colorscheme
-vim.cmd.colorscheme("kanagawa-dragon")
+vim.cmd.colorscheme("silkcircuit")
 
 -- LSP-zero + Mason setup
 local lsp_zero = require('lsp-zero')
@@ -362,7 +363,7 @@ function ColorMyPencils(color)
 end
 
 function ClearBg()
-    vim.cmd.colorscheme("kanagawa-dragon")
+    -- vim.cmd.colorscheme("kanagawa-dragon")
     vim.api.nvim_set_hl(0, "Normal", {bg="none"})
     vim.api.nvim_set_hl(0, "NormalFloat", {bg="none"})
     vim.api.nvim_set_hl(0, "LineNr", {bg="none"})
