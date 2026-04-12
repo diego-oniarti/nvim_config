@@ -54,7 +54,7 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = { "coq", "v" },
     callback = function()
         local opts = { buffer = true, silent = true }
-        vim.keymap.set("n", "<leader>cn", ":CoqNext<CR>", opts)       -- Step forward
+        vim.keymap.set("n", "<leader><leader>", ":CoqNext<CR>", opts)       -- Step forward
         vim.keymap.set("n", "<leader>cp", ":CoqUndo<CR>", opts)       -- Step back
         vim.keymap.set("n", "<leader>cr", ":CoqToLine<CR>", opts)   -- Run to cursor
         vim.keymap.set("n", "<leader>cc", ":CoqStart<CR>", opts)      -- Start coqtop

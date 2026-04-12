@@ -247,7 +247,7 @@ require("lazy").setup({
                 workspaces = {
                     { name = "diary", path = diary_path },
                 },
-                preferred_link_style = "wiki",
+                link = { style = "wiki" },
                 daily_notes = {
                     folder = "days",
                     date_format = "%Y-%m-%d",
@@ -266,6 +266,9 @@ require("lazy").setup({
             vim.g.coqtail_nomap = 1      -- disable all default mappings
         end,
     },
+
+    -- Bullshit --
+    { "alanfortlink/blackjack.nvim", event = "VeryLazy" },
 }, {
     performance = {
         rtp = {
@@ -286,26 +289,38 @@ require("mini.starter").setup()
 require("luasnip.loaders.from_vscode").lazy_load()
 
 -- Colorscheme
-vim.cmd.colorscheme("silkcircuit")
+vim.cmd.colorscheme("kanagawa-dragon")
 
 -- LSP-zero + Mason setup
 local lsp_zero = require('lsp-zero')
 
--- Set up mason
+-- 1. Setup Mason
 require('mason').setup()
 
+-- 2. Configure Mason-LSPConfig
 require('mason-lspconfig').setup({
-    automatic_installation = false,
     handlers = {
         function(server_name)
-            lsp_zero.configure(server_name, {
-                on_attach = function(client, bufnr)
-                    lsp_zero.default_keymaps({ buffer = bufnr })
-                end,
-            })
+            -- Let Mason handle everything EXCEPT Coq
+            if server_name ~= "coq_lsp" then
+                require('lspconfig')[server_name].setup({})
+            end
         end,
     },
 })
+
+-- Coq LSP setup (modern Neovim 0.11+ style)
+-- - Uses opam exec to find coq-lsp in the switch
+-- - Root markers: _CoqProject or .git
+vim.lsp.config('coq_lsp', {
+    cmd = { 'opam', 'exec', '--', 'coq-lsp' },
+    root_markers = { "_CoqProject", ".git" },
+    on_attach = function(client, bufnr)
+        lsp_zero.default_keymaps({ buffer = bufnr })
+    end,
+})
+
+vim.lsp.enable('coq_lsp')
 
 
 -- CMP + LuaSnip setup
@@ -414,28 +429,48 @@ vim.api.nvim_create_autocmd("FileType", {
 end,
 })
 
-vim.lsp.config("lua_ls", {
-    settings = {
-        Lua = {
-            runtime = {
-                version = "LuaJIT",
-            },
-            diagnostics = {
-                globals = { "vim" },
-            },
-            workspace = {
-                library = {
-                    vim.env.VIMRUNTIME,
-                },
-                checkThirdParty = false,
-            },
-            telemetry = {
-                enable = false,
-            },
-        },
-    },
+local box_buf_nr = -1
+
+vim.api.nvim_create_user_command('Box', function()
+    -- Check if the buffer exists and is valid
+    if vim.api.nvim_buf_is_valid(box_buf_nr) then
+        vim.api.nvim_set_current_buf(box_buf_nr)
+    else
+        -- Create a new unlisted scratch buffer
+        box_buf_nr = vim.api.nvim_create_buf(false, true)
+        
+        -- Define the content
+        local lines = {
+            "═", "║", "",
+            "╔╦╗", "╠╬╣", "╚╩╝", "",
+            "╒╤╕", "╞╪╡", "╘╧╛", "",
+            "╓╥╖", "╟╫╢", "╙╨╜"
+        }
+        
+        -- Set lines in the new buffer
+        vim.api.nvim_buf_set_lines(box_buf_nr, 0, -1, false, lines)
+        
+        -- Set buffer options: readonly and nomodifiable to protect the text
+        vim.api.nvim_buf_set_option(box_buf_nr, 'buftype', 'nofile')
+        vim.api.nvim_buf_set_option(box_buf_nr, 'readonly', true)
+        vim.api.nvim_buf_set_option(box_buf_nr, 'modifiable', false)
+        
+        -- Open the newly created buffer in the current window
+        vim.api.nvim_set_current_buf(box_buf_nr)
+    end
+end, {})
+
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    io.stdout:write("\027[>1u")
+  end,
 })
 
-vim.lsp.enable("lua_ls")
+vim.api.nvim_create_autocmd("VimLeavePre", {
+  callback = function()
+    io.stdout:write("\027[<1u")
+  end,
+})
 
 require("post")
