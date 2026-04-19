@@ -80,7 +80,18 @@ require("lazy").setup({
         end,
     },
     { "nvim-mini/mini.nvim" },
-    { "karb94/neoscroll.nvim", event = "VeryLazy", config = function() require('neoscroll').setup() end },
+    -- { "karb94/neoscroll.nvim", event = "VeryLazy", config = function() require('neoscroll').setup() end },
+    {
+        "sphamba/smear-cursor.nvim",
+
+        opts = {
+            smear_between_buffers = true,
+            smear_between_neighbor_lines = true,
+            scroll_buffer_space = true,
+            legacy_computing_symbols_support = true,
+            smear_insert_mode = true,
+        }
+    },
 
     -------------------- Editing --------------------
     { "tpope/vim-surround", event = "VeryLazy" },
