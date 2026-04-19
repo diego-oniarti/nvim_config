@@ -44,7 +44,7 @@ vim.opt.cursorline = true
 
 vim.opt.conceallevel = 2
 
-vim.opt.list = true
+vim.opt.list = false
 vim.opt.listchars = {
     trail = "·",
     tab   = "│-",
