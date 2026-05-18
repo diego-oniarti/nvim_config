@@ -34,11 +34,11 @@ require("lazy").setup({
     {
         "nvim-lualine/lualine.nvim",
         event = "VeryLazy",
-        config = function ()
+        config = function()
             require('lualine').setup {
                 tabline = {
                     lualine_a = { { 'buffers', show_filename_only = false }, },
-                    lualine_z = {'tabs'}
+                    lualine_z = { 'tabs' }
                 }
             }
         end
@@ -63,14 +63,14 @@ require("lazy").setup({
 
             hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
                 -- rainbow colors
-                vim.api.nvim_set_hl(0, "RainbowRed",    { fg = "#F09EA7" })
+                vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#F09EA7" })
                 vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#FAFABE" })
-                vim.api.nvim_set_hl(0, "RainbowBlue",   { fg = "#C7CAFF" })
+                vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#C7CAFF" })
                 vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#F6CA94" })
-                vim.api.nvim_set_hl(0, "RainbowGreen",  { fg = "#C1EBC0" })
+                vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#C1EBC0" })
                 vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#CDABEB" })
-                vim.api.nvim_set_hl(0, "RainbowCyan",   { fg = "#F6C2F3" })
-                vim.api.nvim_set_hl(0, "IblIndent",     { fg = "#535353" })
+                vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#F6C2F3" })
+                vim.api.nvim_set_hl(0, "IblIndent", { fg = "#535353" })
             end)
 
             vim.g.rainbow_delimiters = { highlight = highlight }
@@ -80,10 +80,10 @@ require("lazy").setup({
         end,
     },
     { "nvim-mini/mini.nvim" },
-    -- { "karb94/neoscroll.nvim", event = "VeryLazy", config = function() require('neoscroll').setup() end },
+    --[[
+    { "karb94/neoscroll.nvim", event = "VeryLazy", config = function() require('neoscroll').setup() end },
     {
         "sphamba/smear-cursor.nvim",
-
         opts = {
             smear_between_buffers = true,
             smear_between_neighbor_lines = true,
@@ -92,10 +92,11 @@ require("lazy").setup({
             smear_insert_mode = true,
         }
     },
+    --]]
 
     -------------------- Editing --------------------
     { "tpope/vim-surround", event = "VeryLazy" },
-    { "tpope/vim-repeat", event = "VeryLazy" },
+    { "tpope/vim-repeat",   event = "VeryLazy" },
     {
         "junegunn/vim-easy-align",
         event = "VeryLazy",
@@ -105,26 +106,30 @@ require("lazy").setup({
         },
     },
     { "tpope/vim-fugitive" },
-    { "junegunn/gv.vim", lazt = true},
+    { "junegunn/gv.vim",        lazt = true },
     { "airblade/vim-gitgutter", event = { "BufReadPre", "BufNewFile" } },
 
     -------------------- LSP & Completion --------------------
-    { "VonHeikemen/lsp-zero.nvim", branch = "v4.x", dependencies = {
-        { "neovim/nvim-lspconfig" },
-        { "williamboman/mason.nvim", build = ":MasonUpdate" },
-        { "williamboman/mason-lspconfig.nvim" },
-        { "hrsh7th/nvim-cmp" },
-        { "f3fora/cmp-spell" },
-        { "hrsh7th/cmp-nvim-lsp" },
-        { "L3MON4D3/LuaSnip" },
-        { "saadparwaiz1/cmp_luasnip" },
-        { "rafamadriz/friendly-snippets" },
-        {
-            'aznhe21/actions-preview.nvim',
-            event = "VeryLazy",
-            keys = { {"<C-s>z", function() require("actions-preview").code_actions() end, desc = "Code Actions"} }
+    {
+        "VonHeikemen/lsp-zero.nvim",
+        branch = "v4.x",
+        dependencies = {
+            { "neovim/nvim-lspconfig" },
+            { "williamboman/mason.nvim",          build = ":MasonUpdate" },
+            { "williamboman/mason-lspconfig.nvim" },
+            { "hrsh7th/nvim-cmp" },
+            { "f3fora/cmp-spell" },
+            { "hrsh7th/cmp-nvim-lsp" },
+            { "L3MON4D3/LuaSnip" },
+            { "saadparwaiz1/cmp_luasnip" },
+            { "rafamadriz/friendly-snippets" },
+            {
+                'aznhe21/actions-preview.nvim',
+                event = "VeryLazy",
+                keys = { { "<C-s>z", function() require("actions-preview").code_actions() end, desc = "Code Actions" } }
+            }
         }
-    }},
+    },
 
     -------------------- Syntax & Highlighting --------------------
     { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", event = { "BufReadPost", "BufNewFile" } },
@@ -147,7 +152,7 @@ require("lazy").setup({
                     },
                     custom = {
                         todo   = { raw = '[-]', rendered = '󰥔 ', highlight = 'RenderMarkdownTodo' },
-                        reject = { raw = '[!]', rendered = '✗ ',   highlight = 'RenderMarkdownReject' },
+                        reject = { raw = '[!]', rendered = '✗ ', highlight = 'RenderMarkdownReject' },
                     },
                 },
             })
@@ -159,7 +164,7 @@ require("lazy").setup({
         "nvim-telescope/telescope.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },
         cmd = "Telescope",
-        config = function ()
+        config = function()
             require('telescope').setup({
                 pickers = {
                     find_files = {
@@ -174,7 +179,7 @@ require("lazy").setup({
         "nvim-telescope/telescope-file-browser.nvim",
         dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
         cmd = 'Telescope',
-        config = function ()
+        config = function()
             require("telescope").load_extension "file_browser"
         end,
     },
@@ -222,16 +227,24 @@ require("lazy").setup({
         branch = "harpoon2",
         dependencies = { "nvim-lua/plenary.nvim" },
         keys = {
-            { "<C-s>a", function() require("harpoon").setup(); require("harpoon").list():add() end, desc = "Harpoon Add" },
+            {
+                "<C-s>a",
+                function()
+                    require("harpoon").setup(); require("harpoon").list():add()
+                end,
+                desc = "Harpoon Add"
+            },
             { "<C-s>d", function() require("harpoon").ui:toggle_quick_menu(require("harpoon").list()) end, desc = "Harpoon Toggle" },
-            { "<C-s>h", function() require("harpoon").list():prev() end, desc = "Harpoon Prev" },
-            { "<C-s>l", function() require("harpoon").list():next() end, desc = "Harpoon Next" },
+            { "<C-s>h", function() require("harpoon").list():prev() end,                                   desc = "Harpoon Prev" },
+            { "<C-s>l", function() require("harpoon").list():next() end,                                   desc = "Harpoon Next" },
         }
     },
     {
-        "lervag/vimtex", ft = { "tex" }, config = function()
+        "lervag/vimtex",
+        ft = { "tex" },
+        config = function()
             vim.g.tex_flavor = "latex"
-            vim.g.vimtex_version_check=0
+            vim.g.vimtex_version_check = 0
             vim.g.vimtex_compiler_method = "latexmk"
             if sysname == "Windows_NT" then
                 vim.g.vimtex_view_method = "general"
@@ -244,10 +257,10 @@ require("lazy").setup({
     },
     -- { "folke/trouble.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, cmd = "Trouble" },
     -- { "azabiong/vim-highlighter", event = "VeryLazy" },
-    { "folke/which-key.nvim", event = "VeryLazy", opts = { delay = 5000 } },
-    { "nvzone/volt", lazy = true },
-    { "nvzone/minty", event = "VeryLazy", cmd = { "Shades", "Huefy" } },
-    { "nvzone/showkeys", event = "VeryLazy", cmd = "ShowkeysToggle", opts = { timeout = 1, maxkeys = 5  } },
+    { "folke/which-key.nvim",    event = "VeryLazy", opts = { delay = 5000 } },
+    { "nvzone/volt",             lazy = true },
+    { "nvzone/minty",            event = "VeryLazy", cmd = { "Shades", "Huefy" } },
+    { "nvzone/showkeys",         event = "VeryLazy", cmd = "ShowkeysToggle",     opts = { timeout = 1, maxkeys = 5 } },
     {
         'derektata/lorem.nvim',
         config = function()
@@ -262,13 +275,13 @@ require("lazy").setup({
 
     -------------------- Colors --------------------
     { "rose-pine/neovim", name = "rose-pine", lazy = false, priority = 1000 },
-    { "rakr/vim-one", name = "one", lazy = false, priority = 1000 },
-    { "rjshkhr/shadow.nvim", lazy = false, priority = 1000, config = function() vim.opt.termguicolors = true vim.cmd.colorscheme("shadow") end },
-    { "ku1ik/vim-monokai", lazy = false, priority = 1000 },
-    { "rebelot/kanagawa.nvim", lazy = false, priority = 1000 },
-    { "andreasvc/vim-256noir", lazy = false, priority = 1000 },
+    { "rakr/vim-one",     name = "one",       lazy = false, priority = 1000 },
+    { "rjshkhr/shadow.nvim",         lazy = false, priority = 1000 },
+    { "ku1ik/vim-monokai",           lazy = false, priority = 1000 },
+    { "rebelot/kanagawa.nvim",       lazy = false, priority = 1000 },
+    { "andreasvc/vim-256noir",       lazy = false, priority = 1000 },
     { "preservim/vim-colors-pencil", lazy = false, priority = 1000 },
-    { "Alligator/accent.vim", lazy = false, priority = 1000 },
+    { "Alligator/accent.vim",        lazy = false, priority = 1000 },
     { "hyperb1iss/silkcircuit-nvim", lazy = false, priority = 1000 },
 
     ----------------- Obsidian ---------------------
@@ -310,8 +323,8 @@ require("lazy").setup({
         ft = "coq", -- only load for Coq files
         config = function()
             -- optional: Coqtail config
-            vim.g.coqtail_noimap = 1     -- disable Coqtail's insert mode mappings
-            vim.g.coqtail_nomap = 1      -- disable all default mappings
+            vim.g.coqtail_noimap = 1 -- disable Coqtail's insert mode mappings
+            vim.g.coqtail_nomap = 1  -- disable all default mappings
         end,
     },
 
@@ -337,7 +350,7 @@ require("mini.starter").setup()
 require("luasnip.loaders.from_vscode").lazy_load()
 
 -- Colorscheme
-vim.cmd.colorscheme("kanagawa-dragon")
+vim.cmd.colorscheme("rose-pine-dawn")
 
 -- LSP-zero + Mason setup
 local lsp_zero = require('lsp-zero')
@@ -391,7 +404,7 @@ cmp.setup({
     }),
     sources = cmp.config.sources({
         { name = 'nvim_lsp', priority = 1000 },
-        { name = 'luasnip', priority = 900 },
+        { name = 'luasnip',  priority = 900 },
     }),
 })
 
@@ -406,9 +419,9 @@ vim.api.nvim_create_autocmd("FileType", {
         cmp.setup.buffer({
             sources = cmp.config.sources({
                 { name = 'nvim_lsp', priority = 1000 },
-                { name = 'luasnip', priority = 900 },
-                { name = 'spell', priority = 800 },
-                { name = 'buffer', priority = 700 },
+                { name = 'luasnip',  priority = 900 },
+                { name = 'spell',    priority = 800 },
+                { name = 'buffer',   priority = 700 },
             })
         })
     end
@@ -421,18 +434,18 @@ vim.filetype.add({ extension = { cnf = "dimacs", icnf = "icnf", p = "tptp", smt2
 function ColorMyPencils(color)
     color = color or "rose-pine-moon"
     vim.cmd.colorscheme(color)
-    vim.api.nvim_set_hl(0, "Normal", {bg="none"})
-    vim.api.nvim_set_hl(0, "NormalFloat", {bg="none"})
+    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 end
 
 function ClearBg()
     -- vim.cmd.colorscheme("kanagawa-dragon")
-    vim.api.nvim_set_hl(0, "Normal", {bg="none"})
-    vim.api.nvim_set_hl(0, "NormalFloat", {bg="none"})
-    vim.api.nvim_set_hl(0, "LineNr", {bg="none"})
-    vim.api.nvim_set_hl(0, "StatusLike", {bg="none"})
-    vim.api.nvim_set_hl(0, "VertSplit", {bg="none"})
-    vim.api.nvim_set_hl(0, "CursorLine", {bg="#373836"})
+    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
+    vim.api.nvim_set_hl(0, "StatusLike", { bg = "none" })
+    vim.api.nvim_set_hl(0, "VertSplit", { bg = "none" })
+    vim.api.nvim_set_hl(0, "CursorLine", { bg = "#373836" })
 end
 
 -- ClearBg()
@@ -470,10 +483,10 @@ vim.api.nvim_create_autocmd("FileType", {
                 vim.ui.input({ prompt = "Image name: " }, finalize)
             end
         end, {
-        desc = "Paste an image in a LaTeX file",
-        nargs = "?",
-    })
-end,
+            desc = "Paste an image in a LaTeX file",
+            nargs = "?",
+        })
+    end,
 })
 
 local box_buf_nr = -1
@@ -485,7 +498,7 @@ vim.api.nvim_create_user_command('Box', function()
     else
         -- Create a new unlisted scratch buffer
         box_buf_nr = vim.api.nvim_create_buf(false, true)
-        
+
         -- Define the content
         local lines = {
             "═", "║", "",
@@ -493,15 +506,15 @@ vim.api.nvim_create_user_command('Box', function()
             "╒╤╕", "╞╪╡", "╘╧╛", "",
             "╓╥╖", "╟╫╢", "╙╨╜"
         }
-        
+
         -- Set lines in the new buffer
         vim.api.nvim_buf_set_lines(box_buf_nr, 0, -1, false, lines)
-        
+
         -- Set buffer options: readonly and nomodifiable to protect the text
         vim.api.nvim_buf_set_option(box_buf_nr, 'buftype', 'nofile')
         vim.api.nvim_buf_set_option(box_buf_nr, 'readonly', true)
         vim.api.nvim_buf_set_option(box_buf_nr, 'modifiable', false)
-        
+
         -- Open the newly created buffer in the current window
         vim.api.nvim_set_current_buf(box_buf_nr)
     end
@@ -509,15 +522,15 @@ end, {})
 
 
 vim.api.nvim_create_autocmd("VimEnter", {
-  callback = function()
-    io.stdout:write("\027[>1u")
-  end,
+    callback = function()
+        io.stdout:write("\027[>1u")
+    end,
 })
 
 vim.api.nvim_create_autocmd("VimLeavePre", {
-  callback = function()
-    io.stdout:write("\027[<1u")
-  end,
+    callback = function()
+        io.stdout:write("\027[<1u")
+    end,
 })
 
 require("post")
