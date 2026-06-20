@@ -185,6 +185,7 @@ require("lazy").setup({
     },
 
     -------------------- Utilities --------------------
+    --[[
     {
         "ThePrimeagen/99",
         config = function()
@@ -222,6 +223,7 @@ require("lazy").setup({
             end)
         end,
     },
+    ]]
     {
         "ThePrimeagen/harpoon",
         branch = "harpoon2",
@@ -282,7 +284,21 @@ require("lazy").setup({
     { "andreasvc/vim-256noir",       lazy = false, priority = 1000 },
     { "preservim/vim-colors-pencil", lazy = false, priority = 1000 },
     { "Alligator/accent.vim",        lazy = false, priority = 1000 },
-    { "hyperb1iss/silkcircuit-nvim", lazy = false, priority = 1000 },
+    { "kepano/flexoki-neovim",       lazy = false, priority = 1000 },
+    {
+        'maxmx03/fluoromachine.nvim',
+        lazy = false,
+        priority = 1000,
+        config = function ()
+            local fm = require 'fluoromachine'
+
+            fm.setup {
+                glow = true,
+                theme = 'delta',
+                transparent = false,
+            }
+        end
+    },
 
     ----------------- Obsidian ---------------------
     {
@@ -337,7 +353,7 @@ require("lazy").setup({
                 "gzip",
                 "matchit",
                 "tarPlugin",
-                "tutor",
+                -- "tutor",
                 "zipPlugin",
             },
         },
@@ -350,7 +366,7 @@ require("mini.starter").setup()
 require("luasnip.loaders.from_vscode").lazy_load()
 
 -- Colorscheme
-vim.cmd.colorscheme("rose-pine-dawn")
+vim.cmd.colorscheme("rose-pine")
 
 -- LSP-zero + Mason setup
 local lsp_zero = require('lsp-zero')
@@ -382,7 +398,7 @@ vim.lsp.config('coq_lsp', {
 })
 
 vim.lsp.enable('coq_lsp')
-
+vim.g.coqtail_build_system = 'coqproject'
 
 -- CMP + LuaSnip setup
 local cmp = require('cmp')
@@ -483,10 +499,10 @@ vim.api.nvim_create_autocmd("FileType", {
                 vim.ui.input({ prompt = "Image name: " }, finalize)
             end
         end, {
-            desc = "Paste an image in a LaTeX file",
-            nargs = "?",
-        })
-    end,
+        desc = "Paste an image in a LaTeX file",
+        nargs = "?",
+    })
+end,
 })
 
 local box_buf_nr = -1
@@ -530,6 +546,13 @@ vim.api.nvim_create_autocmd("VimEnter", {
 vim.api.nvim_create_autocmd("VimLeavePre", {
     callback = function()
         io.stdout:write("\027[<1u")
+    end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "v",
+    callback = function()
+        vim.cmd.colorscheme("rose-pine-dawn")
     end,
 })
 
