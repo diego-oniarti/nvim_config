@@ -396,9 +396,24 @@ vim.lsp.config('coq_lsp', {
         lsp_zero.default_keymaps({ buffer = bufnr })
     end,
 })
-
 vim.lsp.enable('coq_lsp')
 vim.g.coqtail_build_system = 'coqproject'
+
+-- Haskell LSP Setup (modern Neovim 0.11+ style)
+vim.lsp.config('hls', {
+    cmd = { 'haskell-language-server-wrapper', '--lsp' },
+    root_markers = { '*.cabal', 'stack.yaml', 'cabal.project', 'package.yaml', '.git' },
+    on_attach = function(client, bufnr)
+        lsp_zero.default_keymaps({ buffer = bufnr })
+    end,
+    settings = {
+        haskell = {
+            -- Prevents HLS from choking when there's no cabal/stack file
+            checkProject = false 
+        }
+    }
+})
+vim.lsp.enable('hls')
 
 -- CMP + LuaSnip setup
 local cmp = require('cmp')
@@ -549,10 +564,33 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
     end,
 })
 
+vim.filetype.add({ extension = { cg = "cg", }, })
+vim.filetype.add({ extension = { coq = "v", }, })
+
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "v",
     callback = function()
         vim.cmd.colorscheme("rose-pine-dawn")
+    end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "c", "cpp" },
+    callback = function()
+        vim.opt.formatprg="clang-format"
+    end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "cg",
+    callback = function()
+        vim.opt.formatprg   = "cg-format"
+        vim.opt.textwidth   = 210
+        vim.opt.colorcolumn = "210"
+        vim.opt.spell       = true
+        vim.opt.spelllang   = { 'en' }
+        vim.opt.wrap        = true
+        vim.opt.linebreak   = true
     end,
 })
 
