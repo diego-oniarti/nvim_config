@@ -158,7 +158,6 @@ require("lazy").setup({
             })
         end,
     },
-    { "azabiong/vim-highlighter" },
     -------------------- Telescope --------------------
     {
         "nvim-telescope/telescope.nvim",
@@ -185,45 +184,6 @@ require("lazy").setup({
     },
 
     -------------------- Utilities --------------------
-    --[[
-    {
-        "ThePrimeagen/99",
-        config = function()
-            local _99 = require("99")
-            local cwd = vim.uv.cwd()
-            local basename = vim.fs.basename(cwd)
-            _99.setup({
-                logger = {
-                    level = _99.DEBUG,
-                    path = "/tmp/" .. basename .. ".99.debug",
-                    print_on_error = true,
-                },
-                tmp_dir = "./tmp",
-                md_files = {
-                    "AGENT.md",
-                },
-                completion = {
-                    source = "cmp",
-                    files = {
-                        max_file_size = 102400,
-                        max_files = 5000,
-                    },
-                },
-                model = "opencode/minimax-m2.5-free",
-            })
-
-            vim.keymap.set("v", "<leader>9v", function()
-                _99.visual()
-            end)
-            vim.keymap.set("n", "<leader>9x", function()
-                _99.stop_all_requests()
-            end)
-            vim.keymap.set("n", "<leader>9s", function()
-                _99.search()
-            end)
-        end,
-    },
-    ]]
     {
         "ThePrimeagen/harpoon",
         branch = "harpoon2",
@@ -257,8 +217,7 @@ require("lazy").setup({
             end
         end
     },
-    -- { "folke/trouble.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, cmd = "Trouble" },
-    -- { "azabiong/vim-highlighter", event = "VeryLazy" },
+    { "azabiong/vim-highlighter", event = "VeryLazy" },
     { "folke/which-key.nvim",    event = "VeryLazy", opts = { delay = 5000 } },
     { "nvzone/volt",             lazy = true },
     { "nvzone/minty",            event = "VeryLazy", cmd = { "Shades", "Huefy" } },
@@ -299,39 +258,17 @@ require("lazy").setup({
             }
         end
     },
-
-    ----------------- Obsidian ---------------------
     {
-        "obsidian-nvim/obsidian.nvim",
-        version = "*",
-        ft = "markdown",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "hrsh7th/nvim-cmp",
-            "nvim-telescope/telescope.nvim",
-            "artempyanykh/marksman",
+        "zenbones-theme/zenbones.nvim",
+        dependencies = "rktjmp/lush.nvim",
+        lazy = false,
+        priority = 1000,
+        -- you can set set configuration options here
+        -- config = function()
+            --     vim.g.zenbones_darken_comments = 45
+            --     vim.cmd.colorscheme('zenbones')
+            -- end
         },
-        opts = function()
-            local diary_path
-            if sysname == "Windows_NT" then
-                diary_path = "E:\\Documenti\\Diario2"
-            elseif sysname == "Linux" then
-                diary_path = "~/Desktop/diario"
-            end
-
-            return {
-                legacy_commands = false,
-                workspaces = {
-                    { name = "diary", path = diary_path },
-                },
-                link = { style = "wiki" },
-                daily_notes = {
-                    folder = "days",
-                    date_format = "%Y-%m-%d",
-                },
-            }
-        end,
-    },
 
     -- COQ --
     {
@@ -361,7 +298,17 @@ require("lazy").setup({
 })
 
 require("mini.sessions").setup()
-require("mini.starter").setup()
+local starter = require('mini.starter')
+starter.setup( {
+    autoopen = true,
+    evaluate_single = false,
+    header = "",
+    items = {
+        starter.sections.sessions(nil, true),
+        starter.sections.builtin_actions(),
+    },
+    footer = "",
+})
 
 require("luasnip.loaders.from_vscode").lazy_load()
 
@@ -425,7 +372,7 @@ cmp.setup({
         ['<C-n>'] = cmp.mapping.select_next_item(),
         ['<C-p>'] = cmp.mapping.select_prev_item(),
         ['<C-y>'] = cmp.mapping.confirm({ select = false }),
-        ['<CR>'] = cmp.mapping.abort(),
+        -- ['<CR>'] = cmp.mapping.abort(),
         ['<Tab>'] = cmp.mapping(function(fallback)
             if luasnip.jumpable(1) then luasnip.jump(1) else fallback() end
         end, { 'i', 's' }),
