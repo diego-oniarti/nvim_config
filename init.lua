@@ -27,6 +27,41 @@ local highlight = {
     "RainbowGreen",
 }
 
+vim.g.vimtex_syntax_custom_cmds = {
+    { name = "CW",   conceal=true, opt=false,       },
+    { name = "CWm",  conceal=true, opt=false,       },
+    { name = "WS",   conceal=true, opt=false,       },
+    { name = "WSm",  conceal=true, opt=false,       },
+    { name = "C",    conceal=true, opt=false,       },
+    { name = "W",    conceal=true, opt=false,       },
+    { name = "CW",   conceal=true, opt=false,       mathmode=true,  },
+    { name = "CWm",  conceal=true, opt=false,       mathmode=true,  },
+    { name = "WS",   conceal=true, opt=false,       mathmode=true,  },
+    { name = "WSm",  conceal=true, opt=false,       mathmode=true,  },
+    { name = "C",  conceal=true, opt=false,         mathmode=true,  },
+    { name = "W",  conceal=true, opt=false,         mathmode=true,  },
+    -- { name = "numt", conceal=true, concealchar="τ", mathmode=true},
+    -- { name = "ptrt", conceal=true, concealchar="τ", mathmode=true},
+    -- { name = "gent", conceal=true, concealchar="τ", mathmode=true},
+}
+vim.api.nvim_create_autocmd("ColorScheme", {
+    callback = function()
+        vim.api.nvim_set_hl(0, "texCCWArg",      { bg = "#EEAAEE" })
+        vim.api.nvim_set_hl(0, "texCCWmArg",     { bg = "#EEAAEE" })
+        vim.api.nvim_set_hl(0, "texCWSArg",      { bg = "#AAAAEE" })
+        vim.api.nvim_set_hl(0, "texCWSmArg",     { bg = "#AAAAEE" })
+        vim.api.nvim_set_hl(0, "texCCArg",       { bg = "#EEAAEE" })
+        vim.api.nvim_set_hl(0, "texCWArg",       { bg = "#AAAAEE" })
+        vim.api.nvim_set_hl(0, "texMathCCWArg",  { bg = "#EEAAEE" })
+        vim.api.nvim_set_hl(0, "texMathCCWmArg", { bg = "#EEAAEE" })
+        vim.api.nvim_set_hl(0, "texMathCWSArg",  { bg = "#AAAAEE" })
+        vim.api.nvim_set_hl(0, "texMathCWSmArg", { bg = "#AAAAEE" })
+        vim.api.nvim_set_hl(0, "texMathCCArg",   { bg = "#EEAAEE" })
+        vim.api.nvim_set_hl(0, "texMathCWArg",   { bg = "#AAAAEE" })
+    end,
+})
+
+
 -- Plugins
 require("lazy").setup({
     -------------------- UI --------------------
@@ -106,8 +141,9 @@ require("lazy").setup({
         },
     },
     { "tpope/vim-fugitive" },
-    { "junegunn/gv.vim",        lazt = true },
+    { "junegunn/gv.vim",        lazy = true },
     { "airblade/vim-gitgutter", event = { "BufReadPre", "BufNewFile" } },
+    { "monaqa/dial.nvim", event = "VeryLazy" },
 
     -------------------- LSP & Completion --------------------
     {
@@ -258,17 +294,7 @@ require("lazy").setup({
             }
         end
     },
-    {
-        "zenbones-theme/zenbones.nvim",
-        dependencies = "rktjmp/lush.nvim",
-        lazy = false,
-        priority = 1000,
-        -- you can set set configuration options here
-        -- config = function()
-            --     vim.g.zenbones_darken_comments = 45
-            --     vim.cmd.colorscheme('zenbones')
-            -- end
-        },
+    -- { "zenbones-theme/zenbones.nvim", dependencies = "rktjmp/lush.nvim", lazy = false, priority = 1000, },
 
     -- COQ --
     {
@@ -297,18 +323,38 @@ require("lazy").setup({
     },
 })
 
-require("mini.sessions").setup()
-local starter = require('mini.starter')
-starter.setup( {
-    autoopen = true,
-    evaluate_single = false,
-    header = "",
-    items = {
-        starter.sections.sessions(nil, true),
-        starter.sections.builtin_actions(),
-    },
-    footer = "",
+require("mini.sessions").setup({
+    autoread = false,
+    autowrite = true,
 })
+vim.api.nvim_create_autocmd("VimEnter", {
+    callback = function()
+        if vim.fn.argc() == 0 and vim.fn.filereadable("Session.vim") == 1 then
+            vim.cmd("source Session.vim")
+            vim.cmd("filetype detect")
+            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                if vim.api.nvim_buf_is_loaded(buf) then
+                    local ft = vim.bo[buf].filetype
+                    if ft ~= "" then
+                        vim.api.nvim_exec_autocmds("FileType", { buffer = buf })
+                    end
+                end
+            end
+        end
+    end,
+})
+
+-- local starter = require('mini.starter')
+-- starter.setup( {
+--     autoopen = true,
+--     evaluate_single = false,
+--     header = "",
+--     items = {
+--         starter.sections.sessions(nil, true),
+--         starter.sections.builtin_actions(),
+--     },
+--     footer = "",
+-- })
 
 require("luasnip.loaders.from_vscode").lazy_load()
 
@@ -407,6 +453,17 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.g.do_filetype_lua = 1
 vim.filetype.add({ extension = { cnf = "dimacs", icnf = "icnf", p = "tptp", smt2 = "smt2", zf = "zf" } })
+
+local augend = require("dial.augend")
+require("dial.config").augends:register_group{
+  default = {
+    augend.integer.alias.decimal,
+    augend.constant.alias.bool,
+    augend.constant.alias.Bool,
+    augend.integer.alias.hex,
+    augend.date.alias["%Y/%m/%d"],
+  }
+}
 
 -- Color helpers
 function ColorMyPencils(color)
@@ -515,16 +572,32 @@ vim.filetype.add({ extension = { cg = "cg", }, })
 vim.filetype.add({ extension = { coq = "v", }, })
 
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = "v",
+    pattern = "coq",
     callback = function()
-        vim.cmd.colorscheme("rose-pine-dawn")
+        -- vim.cmd.colorscheme("rose-pine-dawn")
     end,
 })
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "c", "cpp" },
     callback = function()
-        vim.opt.formatprg="clang-format"
+        vim.bo.formatprg="clang-format"
+    end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "python",
+    callback = function()
+        vim.bo.formatprg = "black -"
+    end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "tex",
+    callback = function()
+        -- vim.cmd.colorscheme("rose-pine-dawn")
+        -- vim.opt.background = "light"
+        vim.opt.concealcursor = "n"
     end,
 })
 
@@ -540,5 +613,18 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt.linebreak   = true
     end,
 })
+
+-- function apply_syntax()
+--     vim.cmd([[
+--         syntax match This /[^}]\+/ contained
+--         highlight This guibg=#EEAAEE
+--         syntax region ABRegion matchgroup=ABDelim start="\\CW{" end="}" concealends contains=ALL containedin=ALL
+--     ]])
+-- end
+-- 
+-- vim.api.nvim_create_autocmd("Syntax", {
+--     pattern = "tex",
+--     callback = apply_syntax,
+-- })
 
 require("post")
